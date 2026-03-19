@@ -1,241 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Prokudin‑Gorskii — Results & Essay</title>
-  <style>
-    :root { --bg:#0b0c10; --card:#121318; --text:#e8eaed; --muted:#a9b0b6; --border:#232630; --shadow:0 10px 25px rgba(0,0,0,.35) }
-    @media (prefers-color-scheme: light){:root{--bg:#f6f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--shadow:0 10px 25px rgba(2,6,23,.08)}}
-    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial}
-    .wrap{max-width:1100px;margin:0 auto;padding:32px 20px 64px}
-    header{margin-bottom:14px}
-    h1{margin:0 0 8px;font-size:clamp(22px,2.6vw,32px)}
-    h2{margin:26px 0 10px;font-size:clamp(20px,2.3vw,28px)}
-    .muted{color:var(--muted)}
-    .pill{display:inline-block;border:1px solid var(--border);background:var(--card);color:var(--muted);padding:6px 10px;border-radius:999px}
-    .section{margin-top:22px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
-    .lead{max-width:78ch}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:14px}
-    figure{margin:0;display:flex;flex-direction:column}
-    figure img{width:100%;height:220px;object-fit:cover;display:block;background:#0f1115;border-radius:14px 14px 0 0}
-    figcaption{padding:10px 12px 12px;border-top:1px solid var(--border);border-radius:0 0 14px 14px}
-    .cap-title{font-weight:600;margin-bottom:4px}
-    .note{font-size:14px;color:var(--muted)}
-    /* Lightbox */
-    dialog#lightbox{width:min(92vw,1100px);height:min(92vh,800px);padding:0;border:none;background:transparent}
-    .lightbox-inner{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);height:100%;display:flex;flex-direction:column;overflow:hidden}
-    .lightbox-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border)}
-    .lightbox-body{display:grid;place-items:center;padding:12px;height:100%;background:#0d0f14}
-    .lightbox-body img{max-width:100%;max-height:100%;object-fit:contain}
-    .x{font-size:22px;line-height:1;border-radius:8px}
-    /* Essay prose */
-    .prose{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
-    .prose p{margin:0 0 10px}
-    footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
-    code{background:rgba(127,127,127,.12);padding:2px 6px;border-radius:6px}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Historic Image Colorization and Alignment | Computer Vision Projects</title>
+  <meta name="description" content="Reconstructing color images from stacked monochrome glass-plate scans with multi-scale alignment.">
+  <link rel="stylesheet" href="../portfolio.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Prokudin‑Gorskii Colorization</h1>
+  <div class="page page-fade">
+    <header class="site-header">
+      <nav class="site-nav">
+        <a class="site-brand" href="../index.html">
+          <span class="brand-mark">CV</span>
+          <span>Computer Vision and ML Projects</span>
+        </a>
+        <div class="nav-links">
+          <a href="../index.html#projects">Project Index</a>
+          <a href="../4/index.html">Stitching</a>
+          <a href="../5/index.html">NeRF</a>
+        </div>
+      </nav>
     </header>
 
-    <!-- ===================== PART I: GALLERY ===================== -->
-    <section class="section" id="part1">
-      <h2>Part I — Gallery</h2>
-      <p class="lead muted" id="introText"></p>
-      <div class="grid" id="grid" aria-live="polite"></div>
-    </section>
-
-    <!-- ===================== PART II: ESSAY ===================== -->
-    <section class="section" id="part2">
-      <h2>Part II — Methods & Workflow</h2>
-      <div class="prose" id="essay">
-        <h3>Introduction</h3>
-        <p>
-            Each scene consists of three digitized glass-plate exposures (B, G, R). The goal is to align the channels and reconstruct a single high-quality color image.
-        </p>
-
-        <h3>Pipeline (Brief)</h3>
-        <ol>
-            <li>Build an image pyramid (downsample by 2 with Gaussian blur at each level).</li>
-            <li>Compute image gradients per level to emphasize texture/edges.</li>
-            <li>Use <em>Normalized Cross-Correlation (NCC)</em> as the similarity score.</li>
-            <li>Fix <strong>Blue</strong> as reference; search shifts for <strong>Green</strong> and <strong>Red</strong>.</li>
-            <li>Coarse-to-fine search: refine the best shift recursively across pyramid levels.</li>
-            <li>Shift G/R to the estimated offsets and stack into RGB.</li>
-            <li>Crop borders to remove alignment artifacts and noisy edges.</li>
-            <li>If inputs aren’t <code>uint8</code>, convert via percentile scaling for consistent JPEG output.</li>
-        </ol>
-
-        <h3>Step Details</h3>
-        <ol>
-            <li>
-            <strong>Pyramid.</strong> Gaussian blur with a separable 5×5 kernel
-            (coefficients <code>[1, 4, 6, 4, 1]</code>) applied along x and y for efficiency
-            (<code>G(x,y)=G(x)G(y)</code>), then downsample by 2.
-            </li>
-            <li>
-            <strong>Gradients.</strong> Sobel filters
-            <code>[[-1,0,1],[-2,0,2],[-1,0,1]]</code> to capture edge structure.
-            </li>
-            <li>
-            <strong>Similarity.</strong> NCC proved more robust than MSE on these images, especially under
-            global brightness/contrast differences.
-            </li>
-            <li>
-            <strong>Reference channel.</strong> Blue is fixed (consistent with starter code); we estimate
-            shifts for Green and Red relative to Blue.
-            </li>
-            <li>
-            <strong>Compose.</strong> Apply the best shifts, merge channels, and crop borders.
-            </li>
-        </ol>
-
-        <h3>Key Parameters</h3>
-        <ol>
-            <li>
-            <strong>Number of pyramid levels.</strong> Image-dependent. Small JPGs work best with 2–3 levels
-            to avoid over-downsampling (too many levels → unstable alignment). Large TIFFs tolerate more.
-            </li>
-            <li>
-            <strong>Search radius.</strong> Typically ±8 at the most coarse level (±1–2 on other levels). For hard
-            cases I increased the most coarse-level radius to ±10 and laster levels to ±3. The current settings
-            are empirical—chosen by inspecting results to balance accuracy and speed.
-            </li>
-        </ol>
-
-        <h3>Notes & Lessons</h3>
-        <ul>
-            <li>
-            Prototyped in Jupyter for rapid iteration on ideas/parameters; once stable, refactored into a
-            Python class for reuse.
-            </li>
-            <li>
-            The hardest part was parameter identical parameters settings can behave very differently across
-            images. I used different parameters on jpg and tiff images. After the first temp, I keep the images with
-            bad performance in the list for next round. In the rest images, for severe ghosting, I expanded the
-            most coarse-level radius; for mild residuals, I gave
-            a bit more radius to intermediate levels to refine local search.
-            </li>
-        </ul>
+    <main>
+      <section class="hero-panel">
+        <div class="case-nav">
+          <a class="back-link" href="../index.html">Back to Project Index</a>
         </div>
+        <div class="project-hero-grid">
+          <div>
+            <span class="eyebrow">Project 1 | Image Alignment and Color Reconstruction</span>
+            <h1 class="project-title">Recovering color from misaligned glass-plate negatives</h1>
+            <p class="project-copy">
+              Each source file is a single grayscale image that actually contains three exposures of the same scene:
+              one for blue, one for green, and one for red. The task is to split that stacked scan into three
+              channels, align the channels, and combine them into a single color reconstruction.
+            </p>
+            <div class="stat-strip">
+              <div class="stat-pill">
+                <strong>Input</strong>
+                <span>One vertically stacked grayscale scan containing blue, green, and red exposures</span>
+              </div>
+              <div class="stat-pill">
+                <strong>Core method</strong>
+                <span>Translation search on edge images with coarse-to-fine refinement</span>
+              </div>
+              <div class="stat-pill">
+                <strong>Outcome</strong>
+                <span>Aligned archival color reconstructions</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-summary">
+            <div class="summary-block">
+              <h3>What makes the task hard</h3>
+              <ul>
+                <li>The three channel exposures are shifted relative to each other.</li>
+                <li>Naive recombination creates color fringes and blurred edges.</li>
+                <li>High-resolution scans make brute-force alignment expensive.</li>
+              </ul>
+            </div>
+            <div class="summary-block">
+              <h3>Pipeline</h3>
+              <ul>
+                <li>Split the stacked plate into separate channels.</li>
+                <li>Measure alignment quality on edge structure instead of raw intensity.</li>
+                <li>Search for the best translation with normalized correlation.</li>
+                <li>Use image pyramids so alignment remains practical on large scans.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    </section>
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">What The Reader Is Looking At</span>
+          <h2 class="section-title">Input and output of the reconstruction pipeline</h2>
+          <p class="section-intro">
+            The source material is not a color image. It is a single stacked scan of three monochrome exposures. The
+            pipeline first separates those exposures, then aligns them, then merges them into one RGB image.
+          </p>
+          <div class="diagram">
+            <p class="diagram-title">Reconstruction Flow</p>
+            <div class="diagram-track">
+              <div class="diagram-step"><div><strong>Stacked Scan</strong><span>One grayscale file with three exposures</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Split Channels</strong><span>Blue, green, and red images extracted</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Align</strong><span>Translations estimated with similarity search</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step warm"><div><strong>Merge RGB</strong><span>Single color reconstruction</span></div></div>
+            </div>
+          </div>
+          <div class="story-grid">
+            <article class="detail-card">
+              <h3>Channel split</h3>
+              <p>The input image is divided into three equal-height slices. Those slices become the blue, green, and red channels of the final image.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Alignment target</h3>
+              <p>Blue is used as the reference channel. Green and red are shifted until strong structures, especially edges, line up with the blue channel.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Final composition</h3>
+              <p>Once the best shifts are found, the channels are stacked into RGB order and the unstable border is cropped away.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Implementation Notes</span>
+          <h2 class="section-title">What makes the alignment reliable</h2>
+          <div class="story-grid">
+            <article class="detail-card">
+              <h3>Edge-based matching</h3>
+              <p>The implementation builds Sobel edge maps for each pyramid level and compares those instead of raw intensities, which makes the search less sensitive to exposure differences between channels.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Normalized correlation</h3>
+              <p>Before scoring a candidate shift, the cropped patches are normalized by mean and standard deviation. This keeps the score focused on structure rather than brightness.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Coarse-to-fine search</h3>
+              <p>The image pyramid is built with Gaussian smoothing and downsampling. A rough shift is found on the smallest image, doubled at each finer level, and refined locally.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Representative Results</span>
+          <h2 class="section-title">Archival reconstructions after channel alignment</h2>
+          <p class="section-intro">
+            These outputs show the pipeline recovering clean color images from vertically stacked monochrome exposures.
+            The main challenge is finding a translation that matches structure while ignoring noisy borders and
+            exposure differences.
+          </p>
+          <div class="image-grid four">
+            <figure>
+              <img src="images/cathedral.jpg" alt="Aligned cathedral image">
+              <figcaption>Cathedral</figcaption>
+            </figure>
+            <figure>
+              <img src="images/church.jpg" alt="Aligned church image">
+              <figcaption>Church</figcaption>
+            </figure>
+            <figure>
+              <img src="images/emir.jpg" alt="Aligned emir image">
+              <figcaption>Emir</figcaption>
+            </figure>
+            <figure>
+              <img src="images/harvesters.jpg" alt="Aligned harvesters image">
+              <figcaption>Harvesters</figcaption>
+            </figure>
+            <figure>
+              <img src="images/italil.jpg" alt="Aligned italil image">
+              <figcaption>Italil</figcaption>
+            </figure>
+            <figure>
+              <img src="images/lastochikino.jpg" alt="Aligned lastochikino image">
+              <figcaption>Lastochikino</figcaption>
+            </figure>
+            <figure>
+              <img src="images/lugano.jpg" alt="Aligned lugano image">
+              <figcaption>Lugano</figcaption>
+            </figure>
+            <figure>
+              <img src="images/monastery.jpg" alt="Aligned monastery image">
+              <figcaption>Monastery</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Full Result Set</span>
+          <h2 class="section-title">Additional reconstructions</h2>
+          <div class="image-grid three">
+            <figure>
+              <img src="images/melons.jpg" alt="Aligned melons image">
+              <figcaption>Melons</figcaption>
+            </figure>
+            <figure>
+              <img src="images/self_portrait.jpg" alt="Aligned self portrait image">
+              <figcaption>Self portrait</figcaption>
+            </figure>
+            <figure>
+              <img src="images/siren.jpg" alt="Aligned siren image">
+              <figcaption>Siren</figcaption>
+            </figure>
+            <figure>
+              <img src="images/tobolsk.jpg" alt="Aligned tobolsk image">
+              <figcaption>Tobolsk</figcaption>
+            </figure>
+            <figure>
+              <img src="images/three_generations.jpg" alt="Aligned three generations image">
+              <figcaption>Three generations</figcaption>
+            </figure>
+            <figure>
+              <img src="images/icon.jpg" alt="Aligned icon image">
+              <figcaption>Icon</figcaption>
+            </figure>
+          </div>
+          <div class="image-grid three compact">
+            <figure>
+              <img src="images/zimu_selection_1.jpg" alt="Personal alignment sample 1">
+              <figcaption>Additional sample 1</figcaption>
+            </figure>
+            <figure>
+              <img src="images/zimu_selection_2.jpg" alt="Personal alignment sample 2">
+              <figcaption>Additional sample 2</figcaption>
+            </figure>
+            <figure>
+              <img src="images/zimu_selection_3.jpg" alt="Personal alignment sample 3">
+              <figcaption>Additional sample 3</figcaption>
+            </figure>
+          </div>
+          <div class="callout">
+            <strong>Key point</strong>
+            <p>This project is a compact example of image registration: the output quality depends less on complex modeling than on careful similarity scoring, stable borders, and multi-scale search.</p>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-
-  <!-- Lightbox dialog -->
-  <dialog id="lightbox">
-    <div class="lightbox-inner">
-      <div class="lightbox-head">
-        <div id="lbTitle">Preview</div>
-        <button class="x" id="lbClose" aria-label="Close">✕</button>
-      </div>
-      <div class="lightbox-body">
-        <img id="lbImg" alt="Full-size preview" />
-      </div>
-    </div>
-  </dialog>
-
-  <script>
-    const IMAGE_DIR = './images/';
-
-    // ---------- Part I text controls ----------
-    const INTRO = `This pages presents 17 RGB reconstructions produced from glass-plate negatives. Each image was aligned via a multi-scale pyramid search using NCC as the matching score.`;
-
-    // Per-image notes (filename → note)
-    const NOTES = {
-      'zimu_selection_3.jpg': 'Green Channel - Shift: (5, 2), Correlation: 22864; Red Channel - Shift: (11, 4), Correlation: 22685',
-      'zimu_selection_2.jpg': 'Green Channel - Shift: (4, 1), Correlation: 27089; Red Channel - Shift: (9, -1), Correlation: 28084',
-      'icon.jpg': 'Green Channel - Shift: (40, 16), Correlation: 850900; Red Channel - Shift: (89, 23), Correlation: 1012585',
-      'lastochikino.jpg': 'Green Channel - Shift: (-2, -2), Correlation: 1336986; Red Channel - Shift: (75, -9), Correlation: 700993',
-      'zimu_selection_1.jpg': 'Green Channel - Shift: (6, 1), Correlation: 22966; Red Channel - Shift: (13, 0), Correlation: 25044',
-      'melons.jpg': 'Green Channel - Shift: (78, 5), Correlation: 1446210; Red Channel - Shift: (175, 11), Correlation: 1849632',
-      'lugano.jpg': 'Green Channel - Shift: (39, -14), Correlation: 1221218; Red Channel - Shift: (92, -29), Correlation: 1592663',
-      'monastery.jpg': 'Green Channel - Shift: (-3, 2), Correlation: 18146; Red Channel - Shift: (3, 2), Correlation: 14388',
-      'italil.jpg': 'Green Channel - Shift: (38, 21), Correlation: 1822799; Red Channel - Shift: (75, 35), Correlation: 2306348',
-      'three_generations.jpg': 'Green Channel - Shift: (46, 3), Correlation: 511189; Red Channel - Shift: (111, 8), Correlation: 1178058',
-      'church.jpg': 'Green Channel - Shift: (15, -2), Correlation: 454390; Red Channel - Shift: (59, -3), Correlation: 625219',
-      'tobolsk.jpg': 'Green Channel - Shift: (3, 2), Correlation: 20324; Red Channel - Shift: (6, 3), Correlation: 14833',
-      'emir.jpg': 'Green Channel - Shift: (9, -1), Correlation: 643848; Red Channel - Shift: (65, 19), Correlation: 845332',
-      'cathedral.jpg': 'Green Channel - Shift: (5, 2), Correlation: 27149; Red Channel - Shift: (12, 3), Correlation: 27097',
-      'harvesters.jpg': 'Green Channel - Shift: (59, 13), Correlation: 1191884; Red Channel - Shift: (121, 11), Correlation: 1229294',
-      'self_portrait.jpg': 'Green Channel - Shift: (53, -1), Correlation: 894374; Red Channel - Shift: (143, -5), Correlation: 1006999',
-      'siren.jpg': 'Green Channel - Shift: (47, -7), Correlation: 941542; Red Channel - Shift: (95, -23), Correlation: 1013529'
-    };
-
-    // If you prefer directory auto-discovery, keep this. We'll normalize to basenames.
-    async function fetchFilesFromDirectory() {
-      try {
-        const res = await fetch(IMAGE_DIR);
-        const text = await res.text();
-        const matches = [...text.matchAll(/href="([^"]+\.(?:jpe?g|png|webp))"/gi)];
-        // Use only the filename part to avoid double-prefixing and weird titles
-        const names = matches.map(m => decodeURIComponent(m[1])).map(p => p.split('/').pop());
-        // Deduplicate & sort
-        return [...new Set(names)].sort((a,b)=>a.localeCompare(b));
-      } catch { return []; }
-    }
-
-    function titleFromFilename(name){
-      const base = name.split('/').pop();
-      return base.replace(/\.[^.]+$/, '').replace(/[\-_]+/g,' ').replace(/\b\w/g, c=>c.toUpperCase());
-    }
-
-    const grid = document.getElementById('grid');
-    const introText = document.getElementById('introText');
-
-    async function render(){
-      introText.textContent = INTRO;
-
-      // Prefer auto-discovery; if unavailable, use NOTES keys
-      let FILES = await fetchFilesFromDirectory();
-      if (!FILES.length) FILES = Object.keys(NOTES);
-
-      if (!FILES.length){
-        grid.innerHTML = `<div class="muted card" style="grid-column:1/-1;padding:18px;border-radius:14px;">No images found. Put files in <code>${IMAGE_DIR}</code> or add filenames as keys in <code>NOTES</code>.</div>`;
-        return;
-      }
-
-      const fr = document.createDocumentFragment();
-      FILES.forEach(fname => {
-        const base = fname.split('/').pop();
-        const src  = IMAGE_DIR + base; // always use normalized relative path
-        const title = titleFromFilename(base);
-        const note = NOTES[base] ?? NOTES[fname] ?? '';
-
-        const fig = document.createElement('figure');
-        fig.className = 'card';
-        fig.innerHTML = `
-          <img loading="lazy" src="${src}" alt="${title}" />
-          <figcaption>
-            <div class="cap-title">${title}</div>
-            <div class="note">${note || '<span class="muted">(Add a note for \'' + base + '\' in NOTES)</span>'}</div>
-          </figcaption>`;
-        fig.addEventListener('click', () => openLightbox(src, title));
-        fr.appendChild(fig);
-      });
-      grid.replaceChildren(fr);
-    }
-
-    // ---------- Lightbox ----------
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lbImg');
-    const lbTitle = document.getElementById('lbTitle');
-    const lbClose = document.getElementById('lbClose');
-
-    function openLightbox(src, title){
-      lbImg.src = src; lbImg.alt = title; lbTitle.textContent = title; lb.showModal();
-    }
-    lbClose.addEventListener('click', ()=> lb.close());
-    lb.addEventListener('click', (e)=>{ if(e.target===lb) lb.close(); });
-
-    render();
-  </script>
 </body>
 </html>

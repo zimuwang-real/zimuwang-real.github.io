@@ -1,310 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UC Berkeley CS180 Portfolio | Zimu Wang</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Space+Grotesk:wght@300;400;500;600&display=swap');
-
-        :root {
-            --bg: #f7f3ed;
-            --ink: #151515;
-            --muted: #5b5b5b;
-            --accent: #c24e2a;
-            --accent-2: #0f3d3e;
-            --card: #ffffff;
-            --ring: rgba(194, 78, 42, 0.25);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: "Space Grotesk", "Segoe UI", sans-serif;
-            color: var(--ink);
-            background: radial-gradient(1200px 800px at 75% -10%, #f1e4d6, transparent 65%),
-                        radial-gradient(900px 700px at -10% 30%, #e8f1ec, transparent 60%),
-                        var(--bg);
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .page {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 28px 20px 80px;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .brand {
-            font-family: "Fraunces", "Times New Roman", serif;
-            font-size: 22px;
-            letter-spacing: 0.5px;
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            border-radius: 999px;
-            border: 1px solid transparent;
-            font-weight: 500;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-        }
-
-        .button.primary {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 10px 24px var(--ring);
-        }
-
-        .button.secondary {
-            background: transparent;
-            border-color: var(--accent-2);
-            color: var(--accent-2);
-        }
-
-        .button:hover {
-            transform: translateY(-2px);
-        }
-
-        .hero {
-            display: grid;
-            gap: 28px;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            align-items: center;
-            margin-bottom: 36px;
-        }
-
-        .hero h1 {
-            font-family: "Fraunces", "Times New Roman", serif;
-            font-size: clamp(32px, 4vw, 52px);
-            line-height: 1.1;
-            margin: 0 0 12px;
-        }
-
-        .hero p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
-        }
-
-        .stat-card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 16px 40px rgba(21, 21, 21, 0.08);
-        }
-
-        .stat-card span {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--muted);
-        }
-
-        .stat-card strong {
-            display: block;
-            font-size: 20px;
-            margin-top: 8px;
-        }
-
-        .section {
-            margin-top: 40px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .section-title h2 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 18px;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 18px;
-            padding: 18px;
-            min-height: 170px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 18px 38px rgba(15, 61, 62, 0.12);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 24px 50px rgba(15, 61, 62, 0.18);
-        }
-
-        .card .label {
-            font-size: 12px;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--accent-2);
-        }
-
-        .card h3 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .card p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .footer {
-            margin-top: 60px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 16px;
-            font-size: 14px;
-            color: var(--muted);
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(12px);
-            animation: fadeUp 0.7s ease forwards;
-        }
-
-        .fade-delay-1 { animation-delay: 0.1s; }
-        .fade-delay-2 { animation-delay: 0.2s; }
-        .fade-delay-3 { animation-delay: 0.3s; }
-        .fade-delay-4 { animation-delay: 0.4s; }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .topbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .cta-group {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computer Vision and ML Projects | Zimu Wang</title>
+  <meta name="description" content="Standalone project pages covering image reconstruction, filtering, panorama stitching, neural rendering, and generative models.">
+  <link rel="stylesheet" href="./portfolio.css">
 </head>
 <body>
-    <div class="page">
-        <header class="topbar fade-in">
-            <div class="brand">Zimu Wang · UC Berkeley CS180 Portfolio</div>
-        </header>
+  <div class="page page-fade">
+    <header class="site-header">
+      <nav class="site-nav">
+        <a class="site-brand" href="./index.html">
+          <span class="brand-mark">CV</span>
+          <span>Computer Vision and ML Projects</span>
+        </a>
+        <div class="nav-links">
+          <a href="#projects">Projects</a>
+          <a href="#areas">Areas</a>
+        </div>
+      </nav>
+    </header>
 
-        <section class="hero">
-            <div class="fade-in fade-delay-1">
-                <h1>Computer Vision Projects Results Demos.</h1>
-                <p>
-                    This portfolio collects my CS180 work, where
-                    each project links to a detailed write-up with goals, methods, and visuals.
-                </p>
+    <main>
+      <section class="hero-panel">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">Standalone Project Archive</span>
+            <h1 class="hero-title">Computer Vision and Machine Learning Projects</h1>
+            <p class="hero-copy">
+              Five project pages cover image alignment, filtering, geometric vision, neural rendering, and generative
+              modeling. Each page explains the input data, the core pipeline, the main implementation choices, and the
+              final outputs without assuming knowledge of any course assignment.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#projects">Project Index</a>
+              <a class="button secondary" href="./5/index.html">Neural Rendering</a>
+              <a class="button secondary" href="./6/index.html">Generative Models</a>
             </div>
-            <div class="stats fade-in fade-delay-2">
-                <div class="stat-card">
-                    <span>Projects</span>
-                    <strong>6 Complete</strong>
-                </div>
-                <div class="stat-card">
-                    <span>Focus</span>
-                    <strong>Computer Vision</strong>
-                </div>
-                <div class="stat-card">
-                    <span>Tools</span>
-                    <strong>Python · OpenCV · ML</strong>
-                </div>
+          </div>
+          <div class="hero-metrics">
+            <div class="metric-card">
+              <span>Scope</span>
+              <strong>5 project pages</strong>
+              <p>From classical registration and filtering to NeRF and diffusion.</p>
             </div>
-        </section>
+            <div class="metric-card">
+              <span>Main Tools</span>
+              <strong>Python, PyTorch, OpenCV, NumPy</strong>
+              <p>Used for geometry, image processing, model training, and evaluation.</p>
+            </div>
+            <div class="metric-card">
+              <span>Classical Vision</span>
+              <strong>Alignment, filtering, geometry, stitching</strong>
+              <p>The first three projects focus on registration, frequency analysis, and projective warps.</p>
+            </div>
+            <div class="metric-card">
+              <span>ML Topics</span>
+              <strong>NeRF, diffusion, UNet variants</strong>
+              <p>The later projects focus on learned scene representations and image generation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <section id="projects" class="section">
-            <div class="section-title">
-                <h2>Project index</h2>
-                <span>Click any card to open the full report.</span>
+      <section class="section" id="projects">
+        <div class="section-card">
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">Project Index</span>
+              <h2 class="section-title">All projects</h2>
             </div>
-            <div class="project-grid">
-                <a class="card fade-in fade-delay-1" href="./1/index.html">
-                    <span class="label">Project 0</span>
-                    <h3>Image Manipulation Basics</h3>
-                    <p>Warm-up exercises covering image I/O, sampling, and simple pixel ops.</p>
-                </a>
-                <a class="card fade-in fade-delay-2" href="./2/index.html">
-                    <span class="label">Project 1</span>
-                    <h3>Filtering & Hybrid Images</h3>
-                    <p>Spatial filtering and frequency analysis to build perceptual hybrids.</p>
-                </a>
-                <a class="card fade-in fade-delay-3" href="./3/index.html">
-                    <span class="label">Project 2</span>
-                    <h3>Image Blending & Pyramids</h3>
-                    <p>Multi-resolution blending techniques for seamless composite images.</p>
-                </a>
-                <a class="card fade-in fade-delay-4" href="./4/index.html">
-                    <span class="label">Project 3</span>
-                    <h3>Feature Matching & Stitching</h3>
-                    <p>Keypoint detection, matching, and panorama generation workflows.</p>
-                </a>
-                <a class="card fade-in fade-delay-1" href="./5/index.html">
-                    <span class="label">Project 4</span>
-                    <h3>Auto Alignment & Reconstruction</h3>
-                    <p>Aligning and reconstructing images with robust, optimized pipelines.</p>
-                </a>
-                <a class="card fade-in fade-delay-2" href="./6/index.html">
-                    <span class="label">Project 5</span>
-                    <h3>Neural Rendering</h3>
-                    <p>Neural techniques for novel view synthesis and scene understanding.</p>
-                </a>
-            </div>
-        </section>
+            <p class="section-intro">
+              Each page is organized around the same questions: what the input is, what the algorithm does, and what
+              the outputs show.
+            </p>
+          </div>
+          <div class="project-grid">
+            <a class="project-card" href="./2/index.html">
+              <span class="label">Project 1</span>
+              <h3>Colorizing Historic Glass-Plate Images</h3>
+              <p>Split a stacked grayscale scan into three color channels, align them, and reconstruct a single color image.</p>
+              <div class="card-tags">
+                <span class="tag">Image Registration</span>
+                <span class="tag">Pyramids</span>
+              </div>
+            </a>
+            <a class="project-card" href="./3/index.html">
+              <span class="label">Project 2</span>
+              <h3>Filtering, Hybrid Images, and Blending</h3>
+              <p>Use filters and pyramids to sharpen images, create hybrids, and blend separate images into one composite.</p>
+              <div class="card-tags">
+                <span class="tag">Filtering</span>
+                <span class="tag">Frequency Analysis</span>
+              </div>
+            </a>
+            <a class="project-card" href="./4/index.html">
+              <span class="label">Project 3</span>
+              <h3>Homographies, Feature Matching, and Stitching</h3>
+              <p>Warp overlapping photos into a common view and stitch them into panoramas using feature matching and homographies.</p>
+              <div class="card-tags">
+                <span class="tag">Geometric Vision</span>
+                <span class="tag">RANSAC</span>
+              </div>
+            </a>
+            <a class="project-card" href="./5/index.html">
+              <span class="label">Project 4</span>
+              <h3>Neural Radiance Fields</h3>
+              <p>Learn a scene representation from multiple images and render new views that were never directly photographed.</p>
+              <div class="card-tags">
+                <span class="tag">PyTorch</span>
+                <span class="tag">NeRF</span>
+                <span class="tag">3D Vision</span>
+              </div>
+            </a>
+            <a class="project-card" href="./6/index.html">
+              <span class="label">Project 5</span>
+              <h3>Diffusion and Flow Matching</h3>
+              <p>Generate and edit images with diffusion models, then train time-conditioned and class-conditioned UNets from scratch.</p>
+              <div class="card-tags">
+                <span class="tag">Diffusion</span>
+                <span class="tag">UNet</span>
+                <span class="tag">Generative ML</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
 
-    </div>
+      <section class="section" id="areas">
+        <div class="section-card">
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">Areas</span>
+              <h2 class="section-title">How the collection is organized</h2>
+            </div>
+            <p class="section-intro">
+              The projects build from direct pixel-space operations to geometry-aware models and then to learned
+              representations.
+            </p>
+          </div>
+          <div class="story-grid">
+            <article class="detail-card">
+              <h3>Image reconstruction and filtering</h3>
+              <ul class="metric-list">
+                <li>Recover color from stacked monochrome scans by aligning channels.</li>
+                <li>Use convolution and frequency reasoning for edges, sharpening, and hybrids.</li>
+                <li>Blend images across scales with Gaussian and Laplacian pyramids.</li>
+              </ul>
+            </article>
+            <article class="detail-card">
+              <h3>Correspondence and projective geometry</h3>
+              <ul class="metric-list">
+                <li>Estimate homographies from point matches.</li>
+                <li>Use Harris corners, feature descriptors, and RANSAC to reject outliers.</li>
+                <li>Warp overlapping photos into a shared panorama.</li>
+              </ul>
+            </article>
+            <article class="detail-card">
+              <h3>Learned scene and image models</h3>
+              <ul class="metric-list">
+                <li>Calibrate cameras and train a NeRF for novel-view synthesis.</li>
+                <li>Use a pretrained diffusion model for denoising, editing, and inpainting.</li>
+                <li>Train time-conditioned and class-conditioned UNets from scratch.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>

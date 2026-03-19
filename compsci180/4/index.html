@@ -1,409 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project 3 — Automatic Stitching Photo Mosaics</title>
-  
-  <!-- KaTeX CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
-  
-  <!-- KaTeX JavaScript -->
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
-  
-  <!-- KaTeX auto-render extension -->
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
-      onload="renderMathInElement(document.body, {
-        delimiters: [
-          {left: '$$', right: '$$', display: true},
-          {left: '$', right: '$', display: false}
-        ]
-      });"></script>
-  
-  <style>
-    :root {
-      --bg: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --accent: #111827;
-      --maxw: 980px;
-      --radius: 14px;
-    }
-    html, body { background: var(--bg); color: var(--text); }
-    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; margin: 0; line-height: 1.6; }
-    a { color: var(--accent); text-decoration: underline; }
-    img { max-width: 100%; height: auto; border-radius: 10px; }
-    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-
-    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 28px 18px 80px; }
-    header { border-bottom: 1px solid var(--border); padding: 22px 0 18px; margin-bottom: 18px; }
-    header h1 { margin: 0 0 6px; font-size: 28px; }
-    header .sub { color: var(--muted); font-size: 14px; }
-
-    section { padding: 22px 0; border-top: 1px solid var(--border); }
-    section h2 { margin: 0 0 8px; font-size: 22px; }
-    section h3 { margin: 14px 0 6px; font-size: 16px; color: var(--muted); font-weight: 600; }
-    p.lead { margin-top: 0; color: var(--muted); }
-
-    .grid { display: grid; gap: 12px; }
-    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    @media (max-width: 680px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } }
-
-    .card { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; background: #fff; }
-    .figcap { font-size: 13px; color: var(--muted); margin-top: 6px; }
-
-    pre { border: 1px solid var(--border); background: #fafafa; padding: 12px; border-radius: 12px; overflow: auto; }
-    footer { border-top: 1px solid var(--border); margin-top: 28px; padding-top: 18px; color: var(--muted); font-size: 14px; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homographies, Feature Matching, and Panoramas | Computer Vision Projects</title>
+  <meta name="description" content="Manual and automatic panorama stitching with homographies, Harris corners, feature matching, and RANSAC.">
+  <link rel="stylesheet" href="../portfolio.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Project 3 — Automatic Stitching Photo Mosaics</h1>
-      <div class="sub">CS180/280A · Fall 2025 · Zimu Wang</div>
+  <div class="page page-fade">
+    <header class="site-header">
+      <nav class="site-nav">
+        <a class="site-brand" href="../index.html">
+          <span class="brand-mark">CV</span>
+          <span>Computer Vision and ML Projects</span>
+        </a>
+        <div class="nav-links">
+          <a href="../index.html#projects">Project Index</a>
+          <a href="../5/index.html">NeRF</a>
+          <a href="../6/index.html">Diffusion</a>
+        </div>
+      </nav>
     </header>
 
-    <section id="summary">
-      <h2>Summary</h2>
-      <p class="lead">In this project I capture overlapping photos and build panoramas by estimating homographies, warping with inverse mapping, and blending with feathering / pyramids.</p>
-    </section>
-
-    <section id="a1">
-      <h2>A.1 — Shoot and Digitize Pictures</h2>
-      <p>Two photos per mosaic, ~40–70% FOV overlap. Below are my raw inputs.</p>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/a1_set1_1.jpg"><figcaption class="figcap">CalDay Left</figcaption></figure>
-        <figure class="card"><img src="images/a1_set1_2.jpg"><figcaption class="figcap">CalDay Right</figcaption></figure>
-      </div>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/a1_set2_1.jpg"><figcaption class="figcap">Campanile Down</figcaption></figure>
-        <figure class="card"><img src="images/a1_set2_2.jpg"><figcaption class="figcap">Campanile Up</figcaption></figure>
-      </div>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/a1_set3_1.jpg"><figcaption class="figcap">My Apartment Roof Left</figcaption></figure>
-        <figure class="card"><img src="images/a1_set3_2.jpg"><figcaption class="figcap">My Apartment Roof Right</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="a2">
-      <h2>A.2 — Recover Homographies</h2>
-      <p>In this part, we want to solve for the homography matrix $H$ that maps points from one image to another.
-        For $(x,y,1)$ in image 1 and $(u,v,1)$ in image 2, we have:</p>
-      
-      <div style="text-align: center; margin: 20px 0;">
-        $$\begin{bmatrix} u \\ v \\ 1 \end{bmatrix} \sim H \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}$$
-      </div>
-
-      <p>This gives us two equations per point correspondence. With some linear algebra, we can set up a linear system $A\mathbf{h} = \mathbf{b}$, where:</p>
-
-      <div style="text-align: center; margin: 25px 0;">
-        $$A = \begin{bmatrix}
-        x_1 & y_1 & 1 & 0 & 0 & 0 & -u_1x_1 & -u_1y_1 \\
-        0 & 0 & 0 & x_1 & y_1 & 1 & -v_1x_1 & -v_1y_1 \\
-        x_2 & y_2 & 1 & 0 & 0 & 0 & -u_2x_2 & -u_2y_2 \\
-        0 & 0 & 0 & x_2 & y_2 & 1 & -v_2x_2 & -v_2y_2 \\
-        x_3 & y_3 & 1 & 0 & 0 & 0 & -u_3x_3 & -u_3y_3 \\
-        0 & 0 & 0 & x_3 & y_3 & 1 & -v_3x_3 & -v_3y_3 \\
-        x_4 & y_4 & 1 & 0 & 0 & 0 & -u_4x_4 & -u_4y_4 \\
-        0 & 0 & 0 & x_4 & y_4 & 1 & -v_4x_4 & -v_4y_4
-        \end{bmatrix}$$
-      </div>
-
-      <div style="text-align: center; margin: 25px 0;">
-        $$\mathbf{h} = \begin{bmatrix}
-        h_{11} \\
-        h_{12} \\
-        h_{13} \\
-        h_{21} \\
-        h_{22} \\
-        h_{23} \\
-        h_{31} \\
-        h_{32}
-        \end{bmatrix}, \quad
-        \mathbf{b} = \begin{bmatrix}
-        u_1 \\
-        v_1 \\
-        u_2 \\
-        v_2 \\
-        u_3 \\
-        v_3 \\
-        u_4 \\
-        v_4
-        \end{bmatrix}$$
-      </div>
-
-      <p>In this part, I manually select 4 pairs of corresponding points in each image pair to construct the matrix $A$ and vector $\mathbf{b}$, then solve for $\mathbf{h}$. As I only choose 4 points, the system is exactly determined, but in practice, more points can be used for a least-squares solution.</p>
-
-      <p>Below are the point correspondences I used for each image pair, along with the transformed $A$ and $\mathbf{b}$, and finally the solved homography matrix $H$.</p>
-      
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/a2_set1_1.jpg"><figcaption class="figcap">CalDay Left</figcaption></figure>
-        <figure class="card"><img src="images/a2_set1_2.jpg"><figcaption class="figcap">CalDay Right</figcaption></figure>
-      </div>
-
-      <h3>Point Correspondences</h3>
-      <div style="display: flex; justify-content: space-around; margin: 20px 0;">
-        <div style="text-align: center;">
-          <h4 style="margin-bottom: 10px;">Left Image Points</h4>
-          $$\begin{bmatrix}
-          2008 & 1324 \\
-          2461 & 1115 \\
-          2689 & 1126 \\
-          3169 & 1374
-          \end{bmatrix}$$
+    <main>
+      <section class="hero-panel">
+        <div class="case-nav">
+          <a class="back-link" href="../index.html">Back to Project Index</a>
         </div>
-        <div style="text-align: center;">
-          <h4 style="margin-bottom: 10px;">Right Image Points</h4>
-          $$\begin{bmatrix}
-          820 & 1339 \\
-          1334 & 1115 \\
-          1544 & 1115 \\
-          1931 & 1320
-          \end{bmatrix}$$
+        <div class="project-hero-grid">
+          <div>
+            <span class="eyebrow">Project 3 | Geometric Vision</span>
+            <h1 class="project-title">Manual and automatic panorama stitching</h1>
+            <p class="project-copy">
+              The goal is to take multiple overlapping photos of the same scene and combine them into a single wider
+              image. This requires estimating how one image maps into another, first with manual correspondences and
+              then with an automatic feature-matching pipeline.
+            </p>
+            <div class="stat-strip">
+              <div class="stat-pill">
+                <strong>Input</strong>
+                <span>Overlapping photos of the same scene taken from slightly different positions</span>
+              </div>
+              <div class="stat-pill">
+                <strong>Methods</strong>
+                <span>Homography estimation, Harris corners, descriptors, nearest-neighbor matching, RANSAC</span>
+              </div>
+              <div class="stat-pill">
+                <strong>Output</strong>
+                <span>Perspective rectification and stitched panoramas on a shared canvas</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-summary">
+            <div class="summary-block">
+              <h3>What must be estimated</h3>
+              <ul>
+                <li>Two images overlap but do not share the same pixel coordinates.</li>
+                <li>A panorama requires warping one image into the coordinate system of another.</li>
+                <li>Automatic matching must handle bad correspondences and outliers.</li>
+              </ul>
+            </div>
+            <div class="summary-block">
+              <h3>Pipeline</h3>
+              <ul>
+                <li>Estimate homographies from matched points.</li>
+                <li>Warp images into a shared reference frame.</li>
+                <li>Detect Harris corners and reduce redundancy with ANMS.</li>
+                <li>Match descriptors and reject outliers with RANSAC.</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <h3>Constructed Matrix $A$ and Vector $\mathbf{b}$</h3>
-      <div style="text-align: center; margin: 25px 0;">
-        $$A = \begin{bmatrix}
-        2008 & 1324 & 1 & 0 & 0 & 0 & -1.647 \times 10^6 & -1.086 \times 10^6 \\
-        0 & 0 & 0 & 2008 & 1324 & 1 & -2.689 \times 10^6 & -1.773 \times 10^6 \\
-        2461 & 1115 & 1 & 0 & 0 & 0 & -3.283 \times 10^6 & -1.487 \times 10^6 \\
-        0 & 0 & 0 & 2461 & 1115 & 1 & -2.744 \times 10^6 & -1.243 \times 10^6 \\
-        2689 & 1126 & 1 & 0 & 0 & 0 & -4.152 \times 10^6 & -1.739 \times 10^6 \\
-        0 & 0 & 0 & 2689 & 1126 & 1 & -2.998 \times 10^6 & -1.255 \times 10^6 \\
-        3169 & 1374 & 1 & 0 & 0 & 0 & -6.119 \times 10^6 & -2.653 \times 10^6 \\
-        0 & 0 & 0 & 3169 & 1374 & 1 & -4.183 \times 10^6 & -1.814 \times 10^6
-        \end{bmatrix}$$
-      </div>
-
-      <div style="text-align: center; margin: 25px 0;">
-        $$\mathbf{b} = \begin{bmatrix} 820 \\ 1339 \\ 1334 \\ 1115 \\ 1544 \\ 1115 \\ 1931 \\ 1320 \end{bmatrix}$$
-      </div>
-
-      <h3>Solved Homography Matrix $H$</h3>
-      <div style="text-align: center; margin: 25px 0;">
-        $$H = \begin{bmatrix}
-        1.003 & -0.458 & -649.537 \\
-        0.021 & 0.735 & 221.850 \\
-        5.733 \times 10^{-5} & -1.444 \times 10^{-4} & 1.000
-        \end{bmatrix}$$
-      </div>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/a2_set2_1.jpg"><figcaption class="figcap">Campanile Down</figcaption></figure>
-        <figure class="card"><img src="images/a2_set2_2.jpg"><figcaption class="figcap">Campanile Up</figcaption></figure>
-      </div>
-
-      <h3>Point Correspondences</h3>
-      <div style="display: flex; justify-content: space-around; margin: 20px 0;">
-        <div style="text-align: center;">
-          <h4 style="margin-bottom: 10px;">Up Image Points</h4>
-          $$\begin{bmatrix}
-          742 & 817 \\
-          988 & 804 \\
-          742 & 1004 \\
-          988 & 1012
-          \end{bmatrix}$$
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">What The Warp Does</span>
+          <h2 class="section-title">From point correspondences to a stitched panorama</h2>
+          <div class="story-grid">
+            <article class="detail-card">
+              <h3>Homography</h3>
+              <p>A homography is a projective mapping between two views of the same plane. Once it is estimated, one image can be resampled into the coordinate system of the other.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Rectification</h3>
+              <p>The same math can also remove perspective distortion. Mapping a photographed rectangle back to a front-facing view is a good way to verify that the warp behaves correctly.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Robust stitching</h3>
+              <p>In the automatic pipeline, feature matches include outliers. RANSAC repeatedly fits candidate homographies and keeps the one supported by the largest consistent set of matches.</p>
+            </article>
+          </div>
         </div>
-        <div style="text-align: center;">
-          <h4 style="margin-bottom: 10px;">Down Image Points</h4>
-          $$\begin{bmatrix}
-          722 & 56 \\
-          996 & 56 \\
-          726 & 310 \\
-          992 & 310
-          \end{bmatrix}$$
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Implementation Details</span>
+          <h2 class="section-title">How the stitching pipeline is actually built</h2>
+          <p class="section-intro">
+            These snippets summarize the core implementation used for homography estimation, corner detection, and
+            stitching. The key pattern is: detect stable features, fit a projective warp, then blend overlaps
+            robustly.
+          </p>
+          <div class="diagram">
+            <p class="diagram-title">Automatic Panorama Pipeline</p>
+            <div class="diagram-track">
+              <div class="diagram-step"><div><strong>Harris Corners</strong><span>Interest points from image gradients</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>ANMS + Descriptors</strong><span>Spatially balanced candidate features</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Nearest Neighbors</strong><span>Generate tentative correspondences</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step warm"><div><strong>RANSAC + Homography</strong><span>Reject outliers and estimate warp</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Warp + Blend</strong><span>Compose images on a shared canvas</span></div></div>
+            </div>
+          </div>
+          <div class="code-grid">
+            <div class="code-panel">
+              <div class="code-panel-header">
+                <strong>Direct homography solve</strong>
+                <span>Projective mapping from matched points</span>
+              </div>
+              <pre><code>def solve_h(img1_pts, img2_pts):
+    A_rows, b_rows = [], []
+    for (x, y), (u, v) in zip(img1_pts, img2_pts):
+        A_rows += [[x, y, 1, 0, 0, 0, -u*x, -u*y],
+                   [0, 0, 0, x, y, 1, -v*x, -v*y]]
+        b_rows += [u, v]
+
+    A = np.asarray(A_rows, dtype=np.float64)
+    b = np.asarray(b_rows, dtype=np.float64)
+    h8 = np.linalg.solve(A, b)
+    return np.append(h8, 1.0).reshape(3, 3)</code></pre>
+            </div>
+            <div class="code-panel">
+              <div class="code-panel-header">
+                <strong>Corner detection with edge rejection</strong>
+                <span>Practical filtering before matching</span>
+              </div>
+              <pre><code>def get_harris_corners(im, edge_discard=20,
+                       min_dist=10, threshold=0.01):
+    h = corner_harris(im, method='eps', sigma=1)
+    coords = peak_local_max(
+        h, min_distance=min_dist, threshold_abs=threshold
+    )
+
+    mask = ((coords[:, 0] &gt; edge_discard) &
+            (coords[:, 0] &lt; im.shape[0] - edge_discard) &
+            (coords[:, 1] &gt; edge_discard) &
+            (coords[:, 1] &lt; im.shape[1] - edge_discard))
+    return h, coords[mask].T</code></pre>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <h3>Constructed Matrix $A$ and Vector $\mathbf{b}$</h3>
-      <div style="text-align: center; margin: 25px 0;">
-        $$A = \begin{bmatrix}
-        742 & 817 & 1 & 0 & 0 & 0 & -5.357 \times 10^5 & -5.899 \times 10^5 \\
-        0 & 0 & 0 & 742 & 817 & 1 & -4.155 \times 10^4 & -4.575 \times 10^4 \\
-        988 & 804 & 1 & 0 & 0 & 0 & -9.840 \times 10^5 & -8.008 \times 10^5 \\
-        0 & 0 & 0 & 988 & 804 & 1 & -5.533 \times 10^4 & -4.502 \times 10^4 \\
-        742 & 1004 & 1 & 0 & 0 & 0 & -5.387 \times 10^5 & -7.289 \times 10^5 \\
-        0 & 0 & 0 & 742 & 1004 & 1 & -2.300 \times 10^5 & -3.112 \times 10^5 \\
-        988 & 1012 & 1 & 0 & 0 & 0 & -9.801 \times 10^5 & -1.004 \times 10^6 \\
-        0 & 0 & 0 & 988 & 1012 & 1 & -3.063 \times 10^5 & -3.137 \times 10^5
-        \end{bmatrix}$$
-      </div>
-
-      <div style="text-align: center; margin: 25px 0;">
-        $$\mathbf{b} = \begin{bmatrix} 722 \\ 56 \\ 996 \\ 56 \\ 726 \\ 310 \\ 992 \\ 310 \end{bmatrix}$$
-      </div>
-
-      <h3>Solved Homography Matrix $H$</h3>
-      <div style="text-align: center; margin: 25px 0;">
-        $$H = \begin{bmatrix}
-        3.010 & 0.264 & -1069.793 \\
-        0.191 & 2.690 & -2232.054 \\
-        8.881 \times 10^{-4} & 3.072 \times 10^{-4} & 1.000
-        \end{bmatrix}$$
-      </div>
-
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/a2_set3_1.jpg"><figcaption class="figcap">My Apartment Roof Left</figcaption></figure>
-        <figure class="card"><img src="images/a2_set3_2.jpg"><figcaption class="figcap">My Apartment Roof Right</figcaption></figure>
-      </div>
-
-      <h3>Point Correspondences</h3>
-      <div style="display: flex; justify-content: space-around; margin: 20px 0;">
-        <div style="text-align: center;">
-          <h4 style="margin-bottom: 10px;">Left Image Points</h4>
-          $$\begin{bmatrix}
-          692 & 1032 \\
-          433 & 1152 \\
-          1054 & 1206 \\
-          1082 & 1386
-          \end{bmatrix}$$
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Manual Geometry</span>
+          <h2 class="section-title">Start with trusted correspondences, then validate the warp</h2>
+          <p class="section-intro">
+            The first stage uses manually selected point pairs. This isolates the geometric part of the problem before
+            moving to automatic feature detection and matching.
+          </p>
+          <div class="image-grid three">
+            <figure>
+              <img src="images/a1_set1_1.jpg" alt="Manual panorama source image 1">
+              <figcaption>Input image for a manual mosaic.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/a1_set1_2.jpg" alt="Manual panorama source image 2">
+              <figcaption>Paired input image with overlap.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/mosaic1.jpg" alt="Manual mosaic result 1">
+              <figcaption>Warped and stitched panorama result.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/a1_set2_1.jpg" alt="Manual panorama source image 3">
+              <figcaption>Second image pair, source 1.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/a1_set2_2.jpg" alt="Manual panorama source image 4">
+              <figcaption>Second image pair, source 2.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/mosaic2.jpg" alt="Manual mosaic result 2">
+              <figcaption>Second stitched panorama.</figcaption>
+            </figure>
+          </div>
         </div>
-        <div style="text-align: center;">
-          <h4 style="margin-bottom: 10px;">Right Image Points</h4>
-          $$\begin{bmatrix}
-          338 & 1039 \\
-          45 & 1176 \\
-          689 & 1176 \\
-          719 & 1339
-          \end{bmatrix}$$
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Rectification</span>
+          <h2 class="section-title">Homographies can also normalize perspective</h2>
+          <p class="section-intro">
+            A rectified result should look as if the camera were facing the surface head-on. This is a useful sanity
+            check for the estimated transformation and the resampling code.
+          </p>
+          <div class="image-grid three">
+            <figure>
+              <img src="images/a3_src_1.jpg" alt="Rectification source 1">
+              <figcaption>Source image before warp.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/a3_nn_1.jpg" alt="Nearest neighbor rectification">
+              <figcaption>Nearest-neighbor rectification.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/a3_bilinear_1.jpg" alt="Bilinear rectification">
+              <figcaption>Bilinear interpolation gives smoother resampling.</figcaption>
+            </figure>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <h3>Constructed Matrix $A$ and Vector $\mathbf{b}$</h3>
-      <div style="text-align: center; margin: 25px 0;">
-        $$A = \begin{bmatrix}
-        692 & 1032 & 1 & 0 & 0 & 0 & -2.339 \times 10^5 & -3.488 \times 10^5 \\
-        0 & 0 & 0 & 692 & 1032 & 1 & -7.190 \times 10^5 & -1.072 \times 10^6 \\
-        433 & 1152 & 1 & 0 & 0 & 0 & -1.949 \times 10^4 & -5.184 \times 10^4 \\
-        0 & 0 & 0 & 433 & 1152 & 1 & -5.092 \times 10^5 & -1.355 \times 10^6 \\
-        1054 & 1206 & 1 & 0 & 0 & 0 & -7.262 \times 10^5 & -8.309 \times 10^5 \\
-        0 & 0 & 0 & 1054 & 1206 & 1 & -1.240 \times 10^6 & -1.418 \times 10^6 \\
-        1082 & 1386 & 1 & 0 & 0 & 0 & -7.780 \times 10^5 & -9.965 \times 10^5 \\
-        0 & 0 & 0 & 1082 & 1386 & 1 & -1.449 \times 10^6 & -1.856 \times 10^6
-        \end{bmatrix}$$
-      </div>
-
-      <div style="text-align: center; margin: 25px 0;">
-        $$\mathbf{b} = \begin{bmatrix} 338 \\ 1039 \\ 45 \\ 1176 \\ 689 \\ 1176 \\ 719 \\ 1339 \end{bmatrix}$$
-      </div>
-
-      <h3>Solved Homography Matrix $H$</h3>
-      <div style="text-align: center; margin: 25px 0;">
-        $$H = \begin{bmatrix}
-        1.157 & -0.061 & -387.790 \\
-        0.196 & 0.846 & 66.810 \\
-        2.401 \times 10^{-4} & -1.266 \times 10^{-4} & 1.000
-        \end{bmatrix}$$
-      </div>
-    </section>
-
-    <section id="a3">
-      <h2>A.3 — Warp the Images (Inverse Mapping)</h2>
-      <p>I implement nearest‑neighbor and bilinear interpolation using inverse warping to rectify images with nearest‑neighbor and bilinear interpolation.</p>
-      <div class="grid cols-3">
-        <figure class="card"><img src="images/a3_src_1.jpg"><figcaption class="figcap">Source image</figcaption></figure>
-        <figure class="card"><img src="images/a3_nn_1.jpg"><figcaption class="figcap">Nearest neighbor warp</figcaption></figure>
-        <figure class="card"><img src="images/a3_bilinear_1.jpg"><figcaption class="figcap">Bilinear warp</figcaption></figure>
-      </div>
-
-      <div class="grid cols-3">
-        <figure class="card"><img src="images/a3_src_2.jpg"><figcaption class="figcap">Source image</figcaption></figure>
-        <figure class="card"><img src="images/a3_nn_2.jpg"><figcaption class="figcap">Nearest neighbor warp</figcaption></figure>
-        <figure class="card"><img src="images/a3_bilinear_2.jpg"><figcaption class="figcap">Bilinear warp</figcaption></figure>
-      </div>
-
-      <div class="card" style="margin-top: 20px;">
-        <h3 style="margin-top: 0; color: var(--text);">Comparison</h3>
-        <p>
-          The qualities of the bilinear and nearest‑neighbor interpolation methods are really similar in my examples. In the first example, as there are lots of words, the clarity of bilinear warping is slightly better.
-      </div>
-    </section>
-
-    <section id="a4">
-      <h2>A.4 — Blend Images into a Mosaic (source images are from part A.1)</h2>
-      <div class="grid cols-1">
-        <figure class="card"><img src="images/mosaic1.jpg"><figcaption class="figcap">Mosaic 1</figcaption></figure>
-      </div>
-      <div class="grid cols-1">
-        <figure class="card"><img src="images/mosaic2.jpg"><figcaption class="figcap">Mosaic 2</figcaption></figure>
-      </div>
-      <div class="grid cols-1">
-        <figure class="card"><img src="images/mosaic3.jpg"><figcaption class="figcap">Mosaic 3</figcaption></figure>
-      </div> 
-
-      <div class="card" style="margin-top: 20px;">
-        <h3 style="margin-top: 0; color: var(--text);">Pipeline</h3>
-        <ol style="margin: 0; padding-left: 20px;">
-          <li style="margin-bottom: 8px;">
-            Use the homography matrix $H$ computed in part A.2 to warp one image to the coordinate system of the other.
-          </li>
-          <li style="margin-bottom: 8px;">
-            Based on the matrix $H$, create a new canvas that can fit both images, and multiply a translation matrix to adjust the origin.
-          </li>
-          <li style="margin-bottom: 8px;">
-            Blend the warped image and the reference image together using alpha blending.
-          </li>
-        </ol>
-      </div>
-    </section>
-  </div>
-
-  <div class="wrap">
-    <section id="b-summary">
-      <h2>Part B — Automatic Stitching</h2>
-      <p class="lead">In this part of the project, I implement an automatic image stitching pipeline. This involves detecting interest points using a Harris detector, applying Adaptive Non-Maximal Suppression (ANMS) to distribute points evenly, extracting feature descriptors for these points, matching features between images, and finally using RANSAC to compute a robust homography for stitching.</p>
-    </section>
-
-    <section id="b1">
-      <h2>B.1 — Harris Corner Detection</h2>
-      <p>First, I detect corner features using a Harris Interest Point Detector. Then, I apply Adaptive Non-Maximal Suppression (ANMS) to reduce the number of interest points and ensure they are well-distributed across the image, which is crucial for a stable homography estimation.</p>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/b1_harris.jpg"><figcaption class="figcap">Harris corners detected on an image.</figcaption></figure>
-        <figure class="card"><img src="images/b1_anms.jpg"><figcaption class="figcap">Corners after Adaptive Non-Maximal Suppression (ANMS), num=250</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="b2">
-      <h2>B.2 — Feature Descriptor Extraction</h2>
-      <p>For each interest point from the previous step, I extract a feature descriptor. This is done by sampling a 40x40 window, downsampling it to 8x8, and then normalizing it (bias/gain normalization). This descriptor captures the local appearance around the feature point.</p>
-      <div class="grid cols-1">
-        <figure class="card"><img src="images/b2_features.jpg"><figcaption class="figcap">Extracted Features</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="b3">
-      <h2>B.3 — Feature Matching</h2>
-      <p>After extracting descriptors for both images, I match them. For each feature in the first image, I find its nearest (1-NN) and second nearest neighbors (2-NN) in the second image based on norm2 distance. I use Lowe's ratio test (1-NN dist / 2-NN dist): if the ratio of the distance to the first neighbor to the distance to the second neighbor is below a certain threshold (0.5 in this case), I consider it a good match.</p>
-      <div class="grid cols-1">
-        <figure class="card"><img src="images/b3_matches.jpg"><figcaption class="figcap">Matched features between two images.</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="b4">
-      <h2>B.4 — RANSAC for Robust Homography</h2>
-      <p>The feature matches from the previous step may still contain outliers. I use RANSAC (Random Sample Consensus) to compute a robust homography matrix. RANSAC iteratively selects random subsets of 4 matching points, computes a homography, and finds the one with the most inliers. This robust homography is then used to warp and stitch the images, similar to Part A.
-        In general, I think the automatic stitching results are better than the manual ones. 
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/mosaic1.jpg"><figcaption class="figcap">Mosaic 1 (Manual Points)</figcaption></figure>
-        <figure class="card"><img src="images/b4_auto_mosaic1.jpg"><figcaption class="figcap">Mosaic 1 (Automatic)</figcaption></figure>
-      </div>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/mosaic2.jpg"><figcaption class="figcap">Mosaic 2 (Manual Points)</figcaption></figure>
-        <figure class="card"><img src="images/b4_auto_mosaic2.jpg"><figcaption class="figcap">Mosaic 2 (Automatic)</figcaption></figure>
-      </div>
-      <div class="grid cols-2">
-        <figure class="card"><img src="images/mosaic3.jpg"><figcaption class="figcap">Mosaic 3 (Manual Points)</figcaption></figure>
-        <figure class="card"><img src="images/b4_auto_mosaic3.jpg"><figcaption class="figcap">Mosaic 3 (Automatic)</figcaption></figure>
-      </div>
-    </section>
-
-
-    <footer>
-      <div>© 2025 Zimu Wang. Assignment spec: “Image Warping and Mosaicing” — CS180/280A.</div>
-    </footer>
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Automatic Pipeline</span>
+          <h2 class="section-title">Feature detection, matching, and robust estimation</h2>
+          <p class="section-intro">
+            After the manual stage is working, the correspondences are generated automatically. The later figures show
+            the full progression from corner detection to final panoramas.
+          </p>
+          <div class="image-grid four">
+            <figure>
+              <img src="images/b1_harris.jpg" alt="Harris corners">
+              <figcaption>Harris corner detections.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/b1_anms.jpg" alt="ANMS features">
+              <figcaption>ANMS prunes points to a more spatially balanced set.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/b2_features.jpg" alt="Feature descriptors">
+              <figcaption>Local feature descriptors for matching.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/b3_matches.jpg" alt="Feature matches">
+              <figcaption>Nearest-neighbor matches before RANSAC filtering.</figcaption>
+            </figure>
+          </div>
+          <div class="image-grid three compact">
+            <figure>
+              <img src="images/b4_auto_mosaic1.jpg" alt="Automatic mosaic 1">
+              <figcaption>Automatic panorama result 1.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/b4_auto_mosaic2.jpg" alt="Automatic mosaic 2">
+              <figcaption>Automatic panorama result 2.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/b4_auto_mosaic3.jpg" alt="Automatic mosaic 3">
+              <figcaption>Automatic panorama result 3.</figcaption>
+            </figure>
+          </div>
+          <div class="callout">
+            <strong>Key point</strong>
+            <p>The main engineering challenge is not the final warp itself. It is getting reliable correspondences and rejecting the bad ones before solving for the homography.</p>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 </body>
 </html>

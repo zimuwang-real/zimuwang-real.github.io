@@ -1,504 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS180 Project 5 — Diffusion & Flow Matching Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #ffffff;
-      --card: #f7f8fa;
-      --accent: #2563eb;
-      --accent-2: #9333ea;
-      --text: #0f172a;
-      --muted: #4b5563;
-      --border: #e5e7eb;
-      --shadow: 0 16px 38px rgba(15, 23, 42, 0.12);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,0.92);
-      border-bottom: 1px solid var(--border);
-    }
-    nav {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    nav .brand {
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      color: var(--accent);
-    }
-    nav a {
-      padding: 6px 10px;
-      border-radius: 8px;
-      transition: background 0.2s ease, color 0.2s ease;
-      color: var(--muted);
-    }
-    nav a:hover { background: var(--border); color: var(--text); }
-    .hero {
-      max-width: 1180px;
-      margin: 40px auto 28px;
-      padding: 24px 20px;
-    }
-    .hero h1 {
-      margin: 0 0 12px;
-      font-size: clamp(28px, 4vw, 40px);
-      letter-spacing: -0.02em;
-    }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(96,165,250,0.12);
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .sub {
-      color: var(--muted);
-      max-width: 780px;
-      margin-top: 8px;
-    }
-    main { max-width: 1180px; margin: 0 auto 60px; padding: 0 20px; }
-    section { margin: 36px 0; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    h2 { margin: 0 0 10px; font-size: 22px; letter-spacing: -0.01em; }
-    h3 { margin: 12px 0 8px; font-size: 18px; color: var(--accent); }
-    p { margin: 6px 0 10px; }
-    .meta {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 14px;
-      margin-top: 12px;
-    }
-    figure {
-      margin: 0;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: rgba(255,255,255,0.02);
-    }
-    figure img, figure video {
-      width: 100%;
-      border-radius: 8px;
-      display: block;
-      background: #0b0d10;
-      border: 1px solid var(--border);
-    }
-    figcaption {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .placeholder {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      background: linear-gradient(135deg, rgba(96,165,250,0.08), rgba(168,85,247,0.08));
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-    .tag {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 8px;
-      background: rgba(168,85,247,0.15);
-      color: #d8b4fe;
-      font-size: 12px;
-      margin-right: 6px;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 24px 0 18px;
-    }
-    ul { margin: 6px 0 10px 18px; color: var(--muted); }
-    @media (max-width: 700px) {
-      nav { gap: 8px; }
-      .hero { margin-top: 24px; }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diffusion, Inpainting, and UNet Generative Models | Computer Vision Projects</title>
+  <meta name="description" content="Diffusion-based denoising and editing, plus time-conditioned and class-conditioned UNet training from scratch.">
+  <link rel="stylesheet" href="../portfolio.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <span class="brand">Proj 5 • Diffusion & Flow Matching</span>
-      <a href="#part-a">Part A</a>
-      <a href="#part-b">Part B</a>
-    </nav>
-  </header>
+  <div class="page page-fade">
+    <header class="site-header">
+      <nav class="site-nav">
+        <a class="site-brand" href="../index.html">
+          <span class="brand-mark">CV</span>
+          <span>Computer Vision and ML Projects</span>
+        </a>
+        <div class="nav-links">
+          <a href="../index.html#projects">Project Index</a>
+          <a href="../5/index.html">NeRF</a>
+          <a href="../4/index.html">Geometric Vision</a>
+        </div>
+      </nav>
+    </header>
 
-  <div class="hero">
-    <div class="pill">CS180 FA25 — Part A + Part B</div>
-    <h1>Diffusion Playgrounds & Flow Matching on MNIST</h1>
+    <main>
+      <section class="hero-panel">
+        <div class="case-nav">
+          <a class="back-link" href="../index.html">Back to Project Index</a>
+        </div>
+        <div class="project-hero-grid">
+          <div>
+            <span class="eyebrow">Project 5 | Generative Vision</span>
+            <h1 class="project-title">Diffusion workflows and UNet-based generative modeling</h1>
+            <p class="project-copy">
+              This page covers two related generative-modeling tasks. Part A studies how a pretrained diffusion model
+              can denoise, edit, and complete images. Part B trains simplified UNet-based generative models from
+              scratch so the sampling process and conditioning logic are explicit rather than hidden behind a library.
+            </p>
+            <div class="stat-strip">
+              <div class="stat-pill">
+                <strong>Part A</strong>
+                <span>Pretrained diffusion for denoising, editing, inpainting, and guided sampling</span>
+              </div>
+              <div class="stat-pill">
+                <strong>Part B</strong>
+                <span>Time-conditioned and class-conditioned UNets trained from scratch on MNIST</span>
+              </div>
+              <div class="stat-pill">
+                <strong>Output</strong>
+                <span>Denoising comparisons, edited images, training curves, and generated samples</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-summary">
+            <div class="summary-block">
+              <h3>Questions on this page</h3>
+              <ul>
+                <li>Understand how iterative denoising turns noise into a plausible image.</li>
+                <li>Control the output with prompts, masks, time conditioning, or class labels.</li>
+                <li>Compare pretrained generation with directly trained UNet models.</li>
+              </ul>
+            </div>
+            <div class="summary-block">
+              <h3>Pipeline</h3>
+              <ul>
+                <li>Forward noising and iterative denoising analysis.</li>
+                <li>Classifier-free guidance, image-to-image translation, and inpainting.</li>
+                <li>Time-conditioned UNet training and sampling.</li>
+                <li>Class-conditioned UNet training with improved sample controllability.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">How To Read This Page</span>
+          <h2 class="section-title">Two views of the same generative process</h2>
+          <div class="story-grid">
+            <article class="detail-card">
+              <h3>Part A: use a pretrained model</h3>
+              <p>The first half treats a diffusion model as an image prior and studies what it can do at inference time: denoising, prompt guidance, inpainting, and controlled image transformation.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Part B: train the model directly</h3>
+              <p>The second half removes the black box by training smaller UNet-based models from scratch, so the effects of timestep conditioning and class conditioning are visible in the loss curves and samples.</p>
+            </article>
+            <article class="detail-card">
+              <h3>Shared idea</h3>
+              <p>Both halves rely on the same basic loop: start from noise or a noisy image, predict how it should change, and repeat that update over many steps until structure appears.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Implementation Details</span>
+          <h2 class="section-title">Actual denoising and UNet logic behind the results</h2>
+          <p class="section-intro">
+            These snippets show two complementary ideas: classifier-free guidance in diffusion, and iterative
+            generation with class-conditioned flow matching.
+          </p>
+          <div class="diagram">
+            <p class="diagram-title">Generative Modeling Pipeline</p>
+            <div class="diagram-track">
+              <div class="diagram-step"><div><strong>Noisy Input</strong><span>Image noise or latent noise sample</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Condition</strong><span>Text prompt, timestep, or class label</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step warm"><div><strong>UNet Prediction</strong><span>Estimate denoising direction or flow</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Guidance / Update</strong><span>Combine conditional and unconditional predictions</span></div></div>
+              <div class="diagram-arrow">→</div>
+              <div class="diagram-step"><div><strong>Refined Sample</strong><span>Repeat across timesteps until the image emerges</span></div></div>
+            </div>
+          </div>
+          <div class="code-grid">
+            <div class="code-panel">
+              <div class="code-panel-header">
+                <strong>Classifier-free guidance denoising</strong>
+                <span>Conditional and unconditional estimates combined each step</span>
+              </div>
+              <pre><code>def iterative_denoise_cfg(image, i_start, prompt_embeds,
+                         uncond_prompt_embeds, timesteps, scale=7):
+    for i in range(i_start, len(timesteps) - 1):
+        t = timesteps[i]
+        prev_t = timesteps[i + 1]
+
+        model_output = stage_1.unet(image, t,
+            encoder_hidden_states=prompt_embeds, return_dict=False)[0]
+        uncond_output = stage_1.unet(image, t,
+            encoder_hidden_states=uncond_prompt_embeds,
+            return_dict=False)[0]
+
+        noise_est, predicted_variance = torch.split(
+            model_output, image.shape[1], dim=1
+        )
+        uncond_noise_est, _ = torch.split(
+            uncond_output, image.shape[1], dim=1
+        )
+        noise_est = uncond_noise_est + scale * (noise_est - uncond_noise_est)
+        # compute next less-noisy image from the DDPM update</code></pre>
+            </div>
+            <div class="code-panel">
+              <div class="code-panel-header">
+                <strong>Time-conditioned flow matching</strong>
+                <span>Sample random times and regress the transport direction</span>
+              </div>
+              <pre><code>def time_fm_forward(unet, x_1, num_ts):
+    x_0 = torch.randn_like(x_1)
+    ground_truth = x_1 - x_0
+
+    t_list = torch.randint(0, num_ts, (x_1.shape[0],),
+                           device=x_1.device)
+    t = t_list.float() / (num_ts - 1)
+    t_shaped = t.view(-1, 1, 1, 1)
+    x_t = (1 - t_shaped) * x_0 + t_shaped * x_1
+    pred = unet(x_t, t)
+    return nn.MSELoss()(pred, ground_truth)</code></pre>
+            </div>
+            <div class="code-panel">
+              <div class="code-panel-header">
+                <strong>Class-conditioned sampling with guidance</strong>
+                <span>Iteratively refine from noise using conditional control</span>
+              </div>
+              <pre><code>def class_fm_sample(unet, c, img_wh, num_ts,
+                    guidance_scale=5.0, seed=0):
+    torch.manual_seed(seed)
+    H, W = img_wh
+    x_t = torch.randn(c.shape[0], 1, H, W,
+                      device=next(unet.parameters()).device)
+    dt = 1.0 / num_ts
+    for t_step in range(num_ts):
+        t = torch.full((c.shape[0],), t_step / num_ts,
+                       device=x_t.device)
+        pred_cond = unet(x_t, c, t)
+        pred_uncond = unet(x_t, c, t, torch.zeros_like(c))
+        pred = pred_uncond + guidance_scale * (pred_cond - pred_uncond)
+        x_t = x_t + pred * dt
+    return x_t</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Part A | Diffusion as an Image Prior</span>
+          <h2 class="section-title">Forward noising, denoising, and iterative editing</h2>
+          <p class="section-intro">
+            A pretrained diffusion model is used to compare classical denoising with learned denoising, then to step
+            through the reverse process more explicitly.
+          </p>
+          <div class="image-grid four">
+            <figure>
+              <img src="images/partA/campanile.png" alt="Clean campanile image">
+              <figcaption>Reference image used throughout the denoising experiments.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.1_noisy_t250.png" alt="Noisy campanile at t250">
+              <figcaption>Forward process at a moderate noise level.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.2_gaussian_denoised_t500.png" alt="Gaussian denoised image">
+              <figcaption>Classical Gaussian denoising baseline.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.3_denoised_t500.png" alt="Diffusion denoised image">
+              <figcaption>Diffusion-based denoising gives a stronger learned prior.</figcaption>
+            </figure>
+          </div>
+          <div class="image-grid three compact">
+            <figure>
+              <img src="images/partA/Part1.4_clean_one_step.png" alt="One-step denoising">
+              <figcaption>One-step denoising result.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.4_iterative_denoise.png" alt="Iterative denoising">
+              <figcaption>Iterative denoising recovers cleaner structure.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.6_random_sample_0.png" alt="Classifier free guidance sample">
+              <figcaption>Unconditional or CFG-guided sampling from the model prior.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Part A | Editing and Control</span>
+          <h2 class="section-title">Image-to-image translation, inpainting, and perception tricks</h2>
+          <p class="section-intro">
+            Once the denoising loop is understood, the same model can be steered with prompts and masks to modify
+            structure while preserving parts of the original image.
+          </p>
+          <div class="image-grid four">
+            <figure>
+              <img src="images/partA/Part1.7_cfg_denoised_istart10.png" alt="Campanile image to image result">
+              <figcaption>Classifier-free-guided image-to-image translation.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.7.2_inpainted_image.png" alt="Inpainted campanile">
+              <figcaption>Masked inpainting on the campanile scene.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.8_flip_illusion_1_up.png" alt="Visual anagram upright">
+              <figcaption>Visual anagram in the upright orientation.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.8_flip_illusion_1_down.png" alt="Visual anagram flipped">
+              <figcaption>The same image carries a second interpretation when flipped.</figcaption>
+            </figure>
+          </div>
+          <div class="image-grid two compact">
+            <figure>
+              <img src="images/partA/Part1.9_hybrid_image_1.png" alt="Hybrid diffusion image 1">
+              <figcaption>Hybrid-image style composition under a diffusion prior.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partA/Part1.9_hybrid_image_2.png" alt="Hybrid diffusion image 2">
+              <figcaption>Second hybrid example exploring the same idea.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-card">
+          <span class="section-kicker">Part B | Model Training</span>
+          <h2 class="section-title">Training time-conditioned and class-conditioned UNets on MNIST</h2>
+          <p class="section-intro">
+            Part B moves from inference-time usage to direct model training, so the effects of conditioning and
+            iterative sampling are visible in both the loss curves and the generated digits.
+          </p>
+          <div class="image-grid three">
+            <figure>
+              <img src="images/partB/1.2.png" alt="Noising visualization">
+              <figcaption>Noising visualization across different noise levels.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partB/1.2.1_training_loss.png" alt="One-step denoiser loss">
+              <figcaption>Training loss for the one-step denoiser baseline.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partB/1.2.3_demo.png" alt="Pure noise denoising demo">
+              <figcaption>Denoising pure noise reveals the ambiguity of weak conditioning.</figcaption>
+            </figure>
+          </div>
+          <div class="image-grid four compact">
+            <figure>
+              <img src="images/partB/2.2_training_loss.png" alt="Time conditioned training loss">
+              <figcaption>Time-conditioned UNet training curve.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partB/2.3_epoch10.png" alt="Time conditioned samples">
+              <figcaption>Time-conditioned sampling after additional training.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partB/2.5_training_loss.png" alt="Class conditioned training loss">
+              <figcaption>Class-conditioned UNet training curve.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/partB/2.6_epoch10.png" alt="Class conditioned samples">
+              <figcaption>Class-conditioned samples show improved controllability.</figcaption>
+            </figure>
+          </div>
+          <div class="callout">
+            <strong>Key point</strong>
+            <p>This page connects high-level diffusion behavior to the lower-level training and sampling loops that actually produce the images.</p>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-
-  <main>
-    <section id="part-a">
-      <div class="card">
-        <h2>Part A — Diffusion Models</h2>
-        <p>DeepFloyd IF exploration, sampling loops, image-to-image edits, inpainting, visual anagrams, and hybrid images.</p>
-        <p><strong>Random Seed:</strong> 42</p>
-
-        <h3>Part 0 — Prompt Exploration</h3>
-        <div class="grid">
-          <figure>
-            <img src="images/partA/stage1_a lithograph of waterfalls.png" alt="Stage 1 waterfalls prompt">
-            <figcaption>Stage 1: a lithograph of waterfalls</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/stage2_a lithograph of waterfalls.png" alt="Stage 2 waterfalls prompt">
-            <figcaption>Stage 2 upsampled: waterfalls</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/stage1_an oil painting of a snowy mountain village.png" alt="Stage 1 snowy village">
-            <figcaption>Stage 1: snowy mountain village</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/stage2_an oil painting of a snowy mountain village.png" alt="Stage 2 snowy village">
-            <figcaption>Stage 2 upsampled: snowy mountain village</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/stage1_an oil painting of people around a campfire.png" alt="Stage 1 campfire">
-            <figcaption>Stage 1: people around a campfire</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/stage2_an oil painting of people around a campfire.png" alt="Stage 2 campfire">
-            <figcaption>Stage 2 upsampled: people around a campfire</figcaption>
-          </figure>
-        </div>
-        <hr>
-        <h3>1.1 Forward Process — Noisy Campanile</h3>
-        <div class="grid">
-          <figure>
-            <img src="images/partA/campanile.png" alt="clean campanile">
-            <figcaption>Clean campanile</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.1_noisy_t250.png" alt="Noisy t=250">
-            <figcaption>t = 250</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.1_noisy_t500.png" alt="Noisy t=500">
-            <figcaption>t = 500</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.1_noisy_t750.png" alt="Noisy t=750">
-            <figcaption>t = 750</figcaption>
-          </figure>
-        </div>
-
-        <hr>
-        <h3>1.2 Classical Denoising — Gaussian Blur</h3>
-        <div class="grid">
-          <figure>
-            <img src="images/partA/campanile.png" alt="clean campanile">
-            <figcaption>Clean campanile</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.2_noisy_t250.png" alt="Noisy t=250">
-            <figcaption>Noisy t=250</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.2_gaussian_denoised_t250.png" alt="Gaussian denoised t=250">
-            <figcaption>Gaussian denoised t=250</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.2_noisy_t500.png" alt="Noisy t=500">
-            <figcaption>Noisy t=500</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.2_gaussian_denoised_t500.png" alt="Gaussian denoised t=500">
-            <figcaption>Gaussian denoised t=500</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.2_noisy_t750.png" alt="Noisy t=750">
-            <figcaption>Noisy t=750</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.2_gaussian_denoised_t750.png" alt="Gaussian denoised t=750">
-            <figcaption>Gaussian denoised t=750</figcaption>
-          </figure>
-        </div>
-
-        <hr>
-        <h3>1.3 Diffusion Denoising</h3>
-        <div class="grid">
-          <figure>
-            <img src="images/partA/Part1.3_denoised_t250.png" alt="Denoised t=250">
-            <figcaption>Denoised t=250</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.3_denoised_t500.png" alt="Denoised t=500">
-            <figcaption>Denoised t=500</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.3_denoised_t750.png" alt="Denoised t=750">
-            <figcaption>Denoised t=750</figcaption>
-          </figure>
-        </div>
-
-        <hr>
-        <h3>1.4 One-Step vs Iterative Editing</h3>
-        <div class="grid">
-          <figure>
-            <img src="images/partA/Part1.4_step_90.png" alt="Noisy Campanile at t=90">
-            <figcaption>Noisy Campanile at t=90</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.4_step_240.png" alt="Noisy Campanile at t=240">
-            <figcaption>Noisy Campanile at t=240</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.4_step_390.png" alt="Noisy Campanile at t=390">
-            <figcaption>Noisy Campanile at t=390</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.4_step_540.png" alt="Noisy Campanile at t=540">
-            <figcaption>Noisy Campanile at t=540</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.4_step_690.png" alt="Noisy Campanile at t=690">
-            <figcaption>Noisy Campanile at t=690</figcaption>
-          </figure>
-        </div>
-        <div class="grid">
-          <figure>
-            <img src="images/partA/Part1.4_blur_filtered.png" alt="Blur filtered">
-            <figcaption>Blur filtered</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.4_clean_one_step.png" alt="One-step clean">
-            <figcaption>Clean one-step denoise</figcaption>
-          </figure>
-          <figure>
-            <img src="images/partA/Part1.4_step_30.png" alt="Iterative denoise">
-            <figcaption>Iterative denoise</figcaption>
-          </figure>
-        </div>
-
-        <hr>
-        <h3>1.5 Unconditional Sampling</h3>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.5_random_sample_0.png" alt="Sample 0"><figcaption>Sample 0</figcaption></figure>
-          <figure><img src="images/partA/Part1.5_random_sample_1.png" alt="Sample 1"><figcaption>Sample 1</figcaption></figure>
-          <figure><img src="images/partA/Part1.5_random_sample_2.png" alt="Sample 2"><figcaption>Sample 2</figcaption></figure>
-          <figure><img src="images/partA/Part1.5_random_sample_3.png" alt="Sample 3"><figcaption>Sample 3</figcaption></figure>
-          <figure><img src="images/partA/Part1.5_random_sample_4.png" alt="Sample 4"><figcaption>Sample 4</figcaption></figure>
-        </div>
-
-        <hr>
-        <h3>1.6 Classifier-Free Guidance Sampling</h3>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.6_random_sample_0.png" alt="CFG Sample 0"><figcaption>CFG Sample 0</figcaption></figure>
-          <figure><img src="images/partA/Part1.6_random_sample_1.png" alt="CFG Sample 1"><figcaption>CFG Sample 1</figcaption></figure>
-          <figure><img src="images/partA/Part1.6_random_sample_2.png" alt="CFG Sample 2"><figcaption>CFG Sample 2</figcaption></figure>
-          <figure><img src="images/partA/Part1.6_random_sample_3.png" alt="CFG Sample 3"><figcaption>CFG Sample 3</figcaption></figure>
-          <figure><img src="images/partA/Part1.6_random_sample_4.png" alt="CFG Sample 4"><figcaption>CFG Sample 4</figcaption></figure>
-        </div>
-
-        <hr>
-        <h3>1.7 Image-to-Image Translation (CFG)</h3>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7_cfg_denoised_istart1.png" alt="CFG i_start 1"><figcaption>i_start = 1 on campanile</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_cfg_denoised_istart3.png" alt="CFG i_start 3"><figcaption>i_start = 3 on campanile</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_cfg_denoised_istart5.png" alt="CFG i_start 5"><figcaption>i_start = 5 on campanile</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_cfg_denoised_istart7.png" alt="CFG i_start 7"><figcaption>i_start = 7 on campanile</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_cfg_denoised_istart10.png" alt="CFG i_start 10"><figcaption>i_start = 10 on campanile</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_cfg_denoised_istart20.png" alt="CFG i_start 20"><figcaption>i_start = 20 on campanile</figcaption></figure>
-          <figure>
-            <img src="images/partA/campanile.png" alt="clean campanile">
-            <figcaption>Clean campanile</figcaption>
-          </figure>
-        </div>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7_mi_cfg_denoised_istart1.png" alt="CFG i_start 1"><figcaption>i_start = 1 on Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_mi_cfg_denoised_istart3.png" alt="CFG i_start 3"><figcaption>i_start = 3 on Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_mi_cfg_denoised_istart5.png" alt="CFG i_start 5"><figcaption>i_start = 5 on Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_mi_cfg_denoised_istart7.png" alt="CFG i_start 7"><figcaption>i_start = 7 on Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_mi_cfg_denoised_istart10.png" alt="CFG i_start 10"><figcaption>i_start = 10 on Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_mi_cfg_denoised_istart20.png" alt="CFG i_start 20"><figcaption>i_start = 20 on Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/mi.jpg" alt="CFG i_start 20"><figcaption>clean Ginger (my cat)</figcaption></figure>
-        </div>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7_rose_cfg_denoised_istart1.png" alt="CFG i_start 1"><figcaption>i_start = 1 on Rose</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_rose_cfg_denoised_istart3.png" alt="CFG i_start 3"><figcaption>i_start = 3 on Rose</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_rose_cfg_denoised_istart5.png" alt="CFG i_start 5"><figcaption>i_start = 5 on Rose</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_rose_cfg_denoised_istart7.png" alt="CFG i_start 7"><figcaption>i_start = 7 on Rose</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_rose_cfg_denoised_istart10.png" alt="CFG i_start 10"><figcaption>i_start = 10 on Rose</figcaption></figure>
-          <figure><img src="images/partA/Part1.7_rose_cfg_denoised_istart20.png" alt="CFG i_start 20"><figcaption>i_start = 20 on Rose</figcaption></figure>
-          <figure><img src="images/partA/rose.jpg" alt="CFG i_start 20"><figcaption>clean Rose</figcaption></figure>
-        </div>
-
-        <h4>1.7.1 Hand-Drawn & Web Inputs</h4>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7.1_handwrite1_denoised_istart1.png" alt="Handwrite1 i1"><figcaption>Handwrite 1 — i_start=1</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite1_denoised_istart3.png" alt="Handwrite1 i3"><figcaption>Handwrite 1 — i_start=3</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite1_denoised_istart5.png" alt="Handwrite1 i5"><figcaption>Handwrite 1 — i_start=5</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite1_denoised_istart7.png" alt="Handwrite1 i7"><figcaption>Handwrite 1 — i_start=7</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite1_denoised_istart10.png" alt="Handwrite1 i10"><figcaption>Handwrite 1 — i_start=10</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite1_denoised_istart20.png" alt="Handwrite1 i20"><figcaption>Handwrite 1 — i_start=20</figcaption></figure>
-          <figure><img src="images/partA/handwrite_1.jpg" alt="Handwrite1 original"><figcaption>Handwrite 1 original</figcaption></figure>
-        </div>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7.1_handwrite2_denoised_istart1.png" alt="Handwrite2 i1"><figcaption>Handwrite 2 — i_start=1</figcaption></figure>
-           <figure><img src="images/partA/Part1.7.1_handwrite2_denoised_istart3.png" alt="Handwrite2 i3"><figcaption>Handwrite 2 — i_start=3</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite2_denoised_istart5.png" alt="Handwrite2 i5"><figcaption>Handwrite 2 — i_start=5</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite2_denoised_istart7.png" alt="Handwrite2 i7"><figcaption>Handwrite 2 — i_start=7</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite2_denoised_istart10.png" alt="Handwrite2 i10"><figcaption>Handwrite 2 — i_start=10</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_handwrite2_denoised_istart20.png" alt="Handwrite2 i20"><figcaption>Handwrite 2 — i_start=20</figcaption></figure>
-          <figure><img src="images/partA/handwrite_2.jpg" alt="Handwrite2 original"><figcaption>Handwrite 2 original</figcaption></figure>
-        </div>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7.1_web_im_denoised_istart1.png" alt="Web i1"><figcaption>Web image — i_start=1</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_web_im_denoised_istart3.png" alt="Web i3"><figcaption>Web image — i_start=3</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_web_im_denoised_istart5.png" alt="Web i5"><figcaption>Web image — i_start=5</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_web_im_denoised_istart7.png" alt="Web i7"><figcaption>Web image — i_start=7</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_web_im_denoised_istart10.png" alt="Web i10"><figcaption>Web image — i_start=10</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.1_web_im_denoised_istart20.png" alt="Web i20"><figcaption>Web image — i_start=20</figcaption></figure>
-          <figure><img src="images/partA/web.jpg" alt="Web original"><figcaption>Web original</figcaption></figure>
-        </div>
-
-        <h4>1.7.2 Inpainting (RePaint)</h4>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7.2_original.png" alt="Original"><figcaption>Original image</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.2_mask.png" alt="Mask"><figcaption>Mask</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.2_to_replace.png" alt="Hole"><figcaption>Area to replace</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.2_inpainted_image.png" alt="Inpainted"><figcaption>Inpainted result</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.2_inpainted_image_mi.png" alt="Inpainted alt"><figcaption>Inpainting Ginger (my cat)</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.2_inpainted_image_rose.png" alt="Inpainted rose"><figcaption>Inpainting rose</figcaption></figure>
-        </div>
-
-        <h4>1.7.3 Text-Conditional Image-to-Image</h4>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.7.3_mi_inpainted_istart1.png" alt="MI i1"><figcaption>My cat with prompt 'a photo of a dog' — i_start=1</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_mi_inpainted_istart10.png" alt="MI i10"><figcaption>My cat with prompt 'a photo of a dog' — i_start=10</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_mi_inpainted_istart20.png" alt="MI i20"><figcaption>My cat with prompt 'a photo of a dog' — i_start=20</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_rocket_inpainted_istart1.png" alt="Rocket i1"><figcaption>Campanile with prompt 'a rocket ship' — i_start=1</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_rocket_inpainted_istart10.png" alt="Rocket i10"><figcaption>Campanile with prompt 'a rocket ship' — i_start=10</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_rocket_inpainted_istart20.png" alt="Rocket i20"><figcaption>Campanile with prompt 'a rocket ship' — i_start=20</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_rose_inpainted_istart1.png" alt="Rose i1"><figcaption>Rose with prompt 'a lithograph of a skull' — i_start=1</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_rose_inpainted_istart10.png" alt="Rose i10"><figcaption>Rose with prompt 'a lithograph of a skull' — i_start=10</figcaption></figure>
-          <figure><img src="images/partA/Part1.7.3_rose_inpainted_istart20.png" alt="Rose i20"><figcaption>Rose with prompt 'a lithograph of a skull' — i_start=20</figcaption></figure>
-        </div>
-
-        <hr>
-        <h3>1.8 Visual Anagrams</h3>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.8_flip_illusion_1_up.png" alt="Illusion 1 up"><figcaption>an oil painting of people around a campfire — upright</figcaption></figure>
-          <figure><img src="images/partA/Part1.8_flip_illusion_1_down.png" alt="Illusion 1 down"><figcaption>an oil painting of an old man — flipped</figcaption></figure>
-          <figure><img src="images/partA/Part1.8_flip_illusion_2_up.png" alt="Illusion 2 up"><figcaption>an oil painting of a snowy mountain village — upright</figcaption></figure>
-          <figure><img src="images/partA/Part1.8_flip_illusion_2_down.png" alt="Illusion 2 down"><figcaption>a photo of a dog — flipped</figcaption></figure>
-          <figure><img src="images/partA/Part1.8_flip_illusion_3_up.png" alt="Illusion 3 up"><figcaption>a lithograph of waterfalls — upright</figcaption></figure>
-          <figure><img src="images/partA/Part1.8_flip_illusion_3_down.png" alt="Illusion 3 down"><figcaption>a photo of a man — flipped</figcaption></figure>
-        </div>
-
-        <hr>
-        <h3>1.9 Hybrid Images</h3>
-        <div class="grid">
-          <figure><img src="images/partA/Part1.9_hybrid_image_1.png" alt="Hybrid 1"><figcaption>Hybrid image 1</figcaption></figure>
-          <figure><img src="images/partA/Part1.9_hybrid_image_2.png" alt="Hybrid 2"><figcaption>Hybrid image 2</figcaption></figure>
-        </div>
-      </div>
-    </section>
-
-    <section id="part-b">
-      <div class="card">
-        <h2>Part B — Flow Matching on MNIST</h2>
-        <p>Training and sampling UNets (time-only and class-conditioned), with required plots and qualitative samples.</p>
-
-        <h3>1.2 Noising Images</h3>
-        <div class="grid">
-          <figure><img src="images/partB/1.2.png" alt="Sigma sweep"><figcaption>Noising visualization (σ sweep)</figcaption></figure>
-        </div>
-
-      <h3>1.2.1 One-Step Denoiser: Noising & Training</h3>
-      <div class="grid">
-        <figure><img src="images/partB/1.2.1_demo.png" alt="Demo 1.2.1"><figcaption>σ = 0.5 denoising demo</figcaption></figure>
-        <figure><img src="images/partB/1.2.1_training_loss.png" alt="Training loss 1.2.1"><figcaption>Training loss curve (σ = 0.5)</figcaption></figure>
-      </div>
-        
-        <h3>1.2.2 Out-of-Distribution Noise</h3>
-        <div class="grid">
-          <figure><img src="images/partB/1.2.2.png" alt="OOD noise results"><figcaption>OOD σ sweep results</figcaption></figure>
-        </div>
-
-
-        <h3>1.2.3 Denoising Pure Noise</h3>
-        <div class="grid">
-          <figure><img src="images/partB/1.2.3_demo.png" alt="Pure noise demo"><figcaption>Pure noise denoising demo</figcaption></figure>
-          <figure><img src="images/partB/1.2.3_trainig_loss.png" alt="Training loss pure noise"><figcaption>Training loss (pure noise)</figcaption></figure>
-        </div>
-        <strong>Observations:</strong> The images seem to contain the features of every number. We can interpret those images as any digit depending on the viewer's perspective. This phenomenon is likely due to the model being trained on pure noise, which lacks specific features to guide the denoising process toward a particular digit. As a result, the model generates images that are ambiguous and can be perceived as multiple digits simultaneously.
-
-        <hr>
-        <h3>2.2 Time-Conditioned UNet — Training</h3>
-        <div class="grid">
-          <figure><img src="images/partB/2.2_training_loss.png" alt="Time-conditioned loss"><figcaption>Training loss (time-conditioned)</figcaption></figure>
-        </div>
-
-        <h3>2.3 Time-Conditioned UNet — Sampling</h3>
-        <div class="grid">
-          <figure><img src="images/partB/2.3_epoch1.png" alt="Epoch 1 samples"><figcaption>Epoch 1 samples</figcaption></figure>
-          <figure><img src="images/partB/2.3_epoch5.png" alt="Epoch 5 samples"><figcaption>Epoch 5 samples</figcaption></figure>
-          <figure><img src="images/partB/2.3_epoch10.png" alt="Epoch 10 samples"><figcaption>Epoch 10 samples</figcaption></figure>
-        </div>
-
-        <hr>
-        <h3>2.5 Class-Conditioned UNet — Training</h3>
-        <div class="grid">
-          <figure><img src="images/partB/2.5_training_loss.png" alt="Class-conditioned loss"><figcaption>Training loss (class-conditioned)</figcaption></figure>
-        </div>
-
-        <h3>2.6 Class-Conditioned UNet — Sampling</h3>
-        <div class="grid">
-          <figure><img src="images/partB/2.6_epoch1.png" alt="Epoch 1 class samples"><figcaption>Epoch 1 samples</figcaption></figure>
-          <figure><img src="images/partB/2.6_epoch5.png" alt="Epoch 5 class samples"><figcaption>Epoch 5 samples</figcaption></figure>
-          <figure><img src="images/partB/2.6_epoch10.png" alt="Epoch 10 class samples"><figcaption>Epoch 10 samples</figcaption></figure>
-        </div>
-      </div>
-    </section>
-
-  </main>
 </body>
 </html>
