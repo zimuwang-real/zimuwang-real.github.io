@@ -17,7 +17,7 @@ Download
 Education
 ======
 
-* **University of California, Berkeley** - B.A. in Computer Science, expected May 2027
+* **University of California, Berkeley** - B.A. in Computer Science
 * **GPA:** 3.94 / 4.0
 
 Research Experience

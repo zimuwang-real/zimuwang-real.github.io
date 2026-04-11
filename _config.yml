@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Zimu Wang"
 title_separator          : "-"
 name                     : &name "Zimu Wang"
-description              : &description "Computer Science at UC Berkeley with interests in machine learning, code LLMs, and computer vision."
+description              : &description "Computer Science at UC Berkeley."
 url                      : https://marrrrrrrrrrtin.github.io
 baseurl                  : ""
 repository               : "Marrrrrrrrrrtin/Marrrrrrrrrrtin.github.io"
@@ -25,7 +25,7 @@ author:
   avatar           : "zimu-wang.jpg"
   name             : "Zimu Wang"
   pronouns         :
-  bio              : "UC Berkeley CS undergraduate working on machine learning, code LLMs, and computer vision."
+  bio              : "UC Berkeley CS undergraduate."
   location         : "Berkeley, CA"
   employer         : "University of California, Berkeley"
   uri              :
