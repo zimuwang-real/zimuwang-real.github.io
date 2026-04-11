@@ -34,10 +34,5 @@ Experience Snapshot
 * **Researcher, Shanghai Jiao Tong University (Spring 2026):** built EffiSkill, scalable inference pipelines, and offline evaluation workflows on EffiBench-X for code-efficiency optimization.
 * **Research Assistant, UC Berkeley (Fall 2025):** developed data-cleaning and analysis pipelines on a 1.2M-row gig-economy dataset and supported collaborator-facing empirical analysis.
 * **Researcher, Shanghai Jiao Tong University (Summer 2025):** implemented SFT + GRPO training pipelines for code LLMs and ran large-scale ablations on 8 x A100 GPUs.
-* **Teaching Assistant, UC Berkeley (Fall 2024):** mentored students in data science and Python programming.
+* **Teaching Assistant, UC Berkeley (Fall 2024):** mentored students on Data 8 for data science and Python programming.
 
-Education
-======
-
-* **University of California, Berkeley**, B.A. in Computer Science, expected **May 2027**
-* **GPA:** 3.94 / 4.0
