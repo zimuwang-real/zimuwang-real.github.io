@@ -11,7 +11,7 @@ I am a computer science undergraduate at **UC Berkeley** interested in **machine
 
 Currently, I am working on research with **Shanghai Jiao Tong University** on automated code-efficiency optimization and post-training for code models. I have also worked on large-scale empirical data analysis at Berkeley and served as a teaching assistant for introductory data science.
 
-<p><a href="/files/Zimu_Wang_Resume.pdf">Resume PDF</a> | <a href="https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra">Google Scholar</a> | <a href="https://github.com/Marrrrrrrrrrtin">GitHub</a> | <a href="/compsci180/">Computer Vision Portfolio</a></p>
+<p><a href="/files/Zimu_Wang_Resume.pdf">Resume PDF</a> | <a href="https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra">Google Scholar</a> | <a href="https://github.com/zimuwang-real">GitHub</a> | <a href="/compsci180/">Computer Vision Portfolio</a></p>
 
 Research Interests
 ======
@@ -35,4 +35,3 @@ Experience Snapshot
 * **Research Assistant, UC Berkeley (Fall 2025):** developed data-cleaning and analysis pipelines on a 1.2M-row gig-economy dataset and supported collaborator-facing empirical analysis.
 * **Researcher, Shanghai Jiao Tong University (Summer 2025):** implemented SFT + GRPO training pipelines for code LLMs and ran large-scale ablations on 8 x A100 GPUs.
 * **Teaching Assistant, UC Berkeley (Fall 2024):** mentored students on Data 8 for data science and Python programming.
-
