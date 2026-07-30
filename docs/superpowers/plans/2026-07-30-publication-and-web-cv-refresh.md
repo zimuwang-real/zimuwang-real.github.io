@@ -39,7 +39,7 @@
 Run:
 
 ```bash
-test "$(rg -c '^\\* \\*\\*\\[' _pages/about.md)" -eq 2
+test "$(rg -c '^\* \*\*\[' _pages/about.md)" -eq 2
 rg -q 'EffiSkill.*EACL 2027' _pages/about.md
 rg -q '^link: "https://arxiv.org/abs/2603.27850"$' _publications/2026-03-29-effiskill.md
 rg -q '^external_only: true$' _publications/2026-03-29-effiskill.md
@@ -102,7 +102,7 @@ Use exactly these two list items in `_pages/about.md`:
 Run:
 
 ```bash
-test "$(rg -c '^\\* \\*\\*\\[' _pages/about.md)" -eq 2
+test "$(rg -c '^\* \*\*\[' _pages/about.md)" -eq 2
 rg -q 'EffiSkill.*EACL 2027' _pages/about.md
 ! sed -n '/Featured Work/,/Experience/p' _pages/about.md | rg -q 'Simple Agent Lab|Building Reliable Long-Horizon'
 rg -q '^link: "https://arxiv.org/abs/2603.27850"$' _publications/2026-03-29-effiskill.md
@@ -170,7 +170,7 @@ rg -q 'Large Language Model Engineering Intern, Douyin AI, ByteDance.*May 2026.*
 rg -q 'Leading the development of Simple Evolve Agent' _pages/cv.md
 rg -q 'Contributing to Simple Agent Lab' _pages/cv.md
 rg -q 'reliable long-horizon agents' _pages/cv.md
-rg -q '^\\[Download full resume \\(PDF\\)\\]\\(/files/Zimu_Wang_Resume.pdf\\)$' _pages/cv.md
+rg -q '^\[Download full resume \(PDF\)\]\(/files/Zimu_Wang_Resume.pdf\)$' _pages/cv.md
 ```
 
 Expected: all commands exit successfully.
