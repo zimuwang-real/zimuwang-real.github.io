@@ -20,6 +20,14 @@ Education
 * **University of California, Berkeley** - B.A. in Computer Science
 * **GPA:** 3.94 / 4.0
 
+Professional Experience
+======
+
+* **Large Language Model Engineering Intern, Douyin AI, ByteDance** - May 2026–Present
+  * Leading the development of Simple Evolve Agent, infrastructure for reproducible agent self-evolution with sandboxed evaluation, provenance tracking, and reliability guardrails.
+  * Contributing to Simple Agent Lab, a compact framework for understandable, verifiable long-horizon agent workflows and reproducible evaluation.
+  * Supporting research and evaluation on reliable long-horizon agents, including system design, benchmarks, and failure recovery.
+
 Research Experience
 ======
 
