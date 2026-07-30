@@ -19,5 +19,8 @@ package-lock.json
 # Ignore folders related to IDEs
 .vscode/
 
+# Ignore local Git worktrees
+.worktrees/
+
 # Ignore files created by MacOS
 .DS_Store
