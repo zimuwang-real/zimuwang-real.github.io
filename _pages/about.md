@@ -24,8 +24,7 @@ Featured Work
 ======
 
 * **[Simple Evolve Agent](https://github.com/simple-agent-lab/simple-evolve-agent)** — **Coming soon.** Infrastructure for reproducible agent self-evolution research, supporting iterative improvement with sandboxed evaluation, provenance tracking, and reliability guardrails.
-* **[Simple Agent Lab](https://github.com/simple-agent-lab/simple-agent-lab)** — **Coming soon.** A compact and practical agent framework for understandable, verifiable long-horizon work and reproducible evaluation.
-* **[Building Reliable Long-Horizon Agents: A Survey](https://building-reliable-long-horizon-agent.github.io/)** — A survey of the definitions, metrics, benchmarks, and system-design principles needed to build agents that remain reliable over extended tasks.
+* **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under review at EACL 2027.** First-author work on automated code-efficiency optimization using reusable agent skills mined from slow and optimized program pairs.
 
 Experience
 ======
