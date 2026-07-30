@@ -3,7 +3,8 @@ title: "Building Reliable Long-Horizon Agents: A Survey"
 collection: publications
 category: conferences
 permalink: /publication/building-reliable-long-horizon-agents/
-link: https://building-reliable-long-horizon-agent.github.io/
+link: "https://building-reliable-long-horizon-agent.github.io/"
+external_only: true
 excerpt: "A survey of the definitions, metrics, benchmarks, and system-design principles needed to build agents that remain reliable over extended tasks."
 date: 2026-07-01
 venue: "Preprint"
