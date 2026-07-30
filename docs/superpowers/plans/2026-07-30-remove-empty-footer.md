@@ -35,8 +35,8 @@ Run:
 
 ```bash
 test "$(rg -l 'class="page__footer"' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
-test "$(rg -l '{% include footer/custom.html %}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
-test "$(rg -l '{% include scripts.html %}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
+test "$(rg -l '\{% include footer/custom.html %\}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
+test "$(rg -l '\{% include scripts.html %\}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
 ```
 
 Expected: all commands pass, proving both layouts currently contain the visual
@@ -71,9 +71,9 @@ Apply the identical replacement in `_layouts/cv-layout.html`.
 Run:
 
 ```bash
-! rg -q 'page__footer|{% include footer.html %}' _layouts/default.html _layouts/cv-layout.html
-test "$(rg -l '{% include footer/custom.html %}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
-test "$(rg -l '{% include scripts.html %}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
+! rg -q 'page__footer|\{% include footer.html %\}' _layouts/default.html _layouts/cv-layout.html
+test "$(rg -l '\{% include footer/custom.html %\}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
+test "$(rg -l '\{% include scripts.html %\}' _layouts/default.html _layouts/cv-layout.html | wc -l | tr -d ' ')" -eq 2
 ```
 
 Expected: no visual footer references remain, and both layouts still contain
