@@ -23,7 +23,7 @@ Research Interests
 Selected Work
 ======
 
-* **[RSIHub](https://simpleagentlab.com/rsihub/)** — **Primary developer; built the project from 0→1.** An open-source framework for reproducible agent self-improvement under frozen evaluators and declared mutation boundaries, with auditable experiment lineage.
+* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** — **Primary developer; built the project from 0→1.** An open-source framework for reproducible agent self-improvement under frozen evaluators and declared mutation boundaries, with auditable experiment lineage.
 * **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under review at EACL 2027.** First-author work on automated code-efficiency optimization using reusable agent skills mined from slow and optimized program pairs.
 
 Experience
