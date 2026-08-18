@@ -26,10 +26,9 @@ Selected Work
 * **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** — **Primary developer; built the project from 0→1.** An open-source framework for reproducible agent self-improvement under frozen evaluators and declared mutation boundaries, with auditable experiment lineage.
 * **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under review at EACL 2027.** First-author work on automated code-efficiency optimization using reusable agent skills mined from slow and optimized program pairs.
 
-Experience
+Selected Experience
 ======
 
 * **Large Language Model Engineering Intern, Douyin AI, ByteDance — May–August 2026:** worked on agent self-evolution, practical agent systems, and evaluation for long-horizon and code-oriented tasks.
 * **Researcher, Shanghai Jiao Tong University — Summer 2025 and Spring 2026:** developed SFT and GRPO training pipelines for code models, then built EffiSkill and its scalable inference and evaluation workflows for code-efficiency optimization.
-* **Research Assistant, UC Berkeley (Fall 2025):** developed data-cleaning and analysis pipelines on a 1.2M-row gig-economy dataset and supported collaborator-facing empirical analysis.
 * **Teaching Assistant, UC Berkeley (Fall 2024):** mentored students on Data 8 for data science and Python programming.

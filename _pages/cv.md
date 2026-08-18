@@ -31,12 +31,18 @@ Professional Experience
 Research Experience
 ======
 
+* **Undergraduate Researcher, University of California, Berkeley** - Spring 2026; Fall 2026–Present
+  * Advised by [Professor Avideh Zakhor](https://www2.eecs.berkeley.edu/Faculty/Homepages/zakhor.html).
+  * Studied whole-body motion-control methods and trained control policies in MuJoCo and Isaac Lab for the Unitree G1 humanoid robot.
+  * Investigated simulation-to-real deployment and hardware-integration challenges on the Unitree G1 platform.
+
 * **Researcher, Shanghai Jiao Tong University** - Spring 2026
   * Developed EffiSkill, a two-stage LLM framework for automated code-efficiency optimization based on reusable optimization skills mined from slow and optimized program pairs.
   * Built scalable inference and evaluation pipelines on EffiBench-X across Python and C++, supporting top-k generation, public/private ranking, and offline runtime evaluation.
   * Improved optimization success rate over the strongest baseline by 3.69 to 12.52 points across model and language settings.
 
 * **Research Assistant, University of California, Berkeley** - Fall 2025
+  * Advised by [Professor Park Sinchaisri](https://haas.berkeley.edu/faculty/park-sinchaisri/).
   * Built end-to-end processing pipelines for a 1.2M-row gig-economy dataset and produced validated, analysis-ready datasets for collaborators.
   * Ran 30+ linear regressions and generated 40+ plots with robustness checks using statsmodels and scikit-learn.
 
