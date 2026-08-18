@@ -37,6 +37,7 @@ Research Experience
   * Investigated simulation-to-real deployment and hardware-integration challenges on the Unitree G1 platform.
 
 * **Researcher, Shanghai Jiao Tong University** - Spring 2026
+  * Mentored by [Yuling Shi](https://yerbasite.github.io/) under the supervision of [Professor Xiaodong Gu](https://guxd.github.io/).
   * Developed EffiSkill, a two-stage LLM framework for automated code-efficiency optimization based on reusable optimization skills mined from slow and optimized program pairs.
   * Built scalable inference and evaluation pipelines on EffiBench-X across Python and C++, supporting top-k generation, public/private ranking, and offline runtime evaluation.
   * Improved optimization success rate over the strongest baseline by 3.69 to 12.52 points across model and language settings.
@@ -47,6 +48,7 @@ Research Experience
   * Ran 30+ linear regressions and generated 40+ plots with robustness checks using statsmodels and scikit-learn.
 
 * **Researcher, Shanghai Jiao Tong University** - Summer 2025
+  * Mentored by [Yuling Shi](https://yerbasite.github.io/) under the supervision of [Professor Xiaodong Gu](https://guxd.github.io/).
   * Implemented an SFT + GRPO training pipeline for code LLMs using KodCode, including prompt standardization, reward parsing, and automated evaluation.
   * Trained for 100k+ steps on 8 x A100 GPUs and established a reproducible RL fine-tuning workflow and evaluation stack.
 
