@@ -11,4 +11,6 @@ I am the primary developer of RSIHub and led its 0→1 implementation. My work s
 
 RSIHub enables controlled agent self-improvement while keeping the evaluation mechanism outside the candidate's mutable surface and preserving reproducible evidence for each generation.
 
+Across full benchmark runs, the best configurations improved Terminal-Bench 2 with MiniSWE from 56.2% to 69.7% (+13.5 points) and Tau3-Bench Banking with Codex from 24.7% to 34.0% (+9.3 points).
+
 [Project overview](https://simpleagentlab.com/rsihub/) · [GitHub](https://github.com/simple-agent-lab/RSIHub) · [Documentation](https://simpleagentlab.com/RSIHub/)
