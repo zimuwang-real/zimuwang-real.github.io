@@ -12,7 +12,7 @@ site_theme               : "default" # The available themes options are "default
 title                    : "Zimu Wang"
 title_separator          : "-"
 name                     : &name "Zimu Wang"
-description              : &description "Computer Science at UC Berkeley."
+description              : &description "UC Berkeley computer science undergraduate working on self-improving agents, code intelligence, and reliable AI systems."
 url                      : https://zimuwang-real.github.io
 baseurl                  : ""
 repository               : "zimuwang-real/zimuwang-real.github.io"
@@ -25,7 +25,7 @@ author:
   avatar           : "zimu-wang.jpg"
   name             : "Zimu Wang"
   pronouns         :
-  bio              : "UC Berkeley CS undergraduate."
+  bio              : "UC Berkeley CS undergraduate building self-improving and reliable AI agents."
   location         : "Berkeley, CA"
   employer         : "University of California, Berkeley"
   uri              :
@@ -65,7 +65,7 @@ author:
   keybase          :
   instagram        :
   lastfm           :
-  linkedin         :
+  linkedin         : "zimu-wang-32b62a289"
   mastodon         :
   medium           :
   pinterest        :
@@ -148,6 +148,7 @@ social:
   links:
     - "https://github.com/zimuwang-real"
     - "https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra"
+    - "https://www.linkedin.com/in/zimu-wang-32b62a289"
 
 
 # Analytics
@@ -176,20 +177,31 @@ exclude:
   - CHANGELOG
   - Capfile
   - config
+  - CONTRIBUTING.md
   - Dockerfile
   - docs/superpowers
+  - docker-compose.yaml
   - Gemfile
   - Gruntfile.js
   - gulpfile.js
   - LICENSE
   - local
   - log
+  - markdown_generator
   - node_modules
+  - package-lock.json
   - package.json*
+  - porfolio.jpg
   - Rakefile
   - README
+  - scripts
+  - talkmap
+  - talkmap.ipynb
+  - talkmap.py
+  - talkmap_out.ipynb
   - tmp
   - vendor
+  - Zimu_Resume.pdf
 keep_files:
   - .git
   - .svn

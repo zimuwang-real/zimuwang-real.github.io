@@ -7,12 +7,11 @@ redirect_from:
   - /about.html
 ---
 
-I am a computer science undergraduate at **UC Berkeley**. I recently completed an **LLM Engineering Internship at Douyin AI, ByteDance**, where I worked on agent self-evolution, practical agent systems, and evaluation for long-horizon and code-oriented tasks. My research focuses on self-improving agents, code intelligence, and reliable AI systems.
+I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027. I recently completed an **LLM engineering internship at ByteDance**, where I led development of RSIHub and worked on practical agent systems for self-improvement, long-horizon tasks, and code-oriented evaluation. My research focuses on self-improving agents, code intelligence, and reliable AI systems.
 
-<p><a href="/files/Zimu_Wang_Resume.pdf">Resume PDF</a> | <a href="https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra">Google Scholar</a> | <a href="https://github.com/zimuwang-real">GitHub</a></p>
+<p><a href="/files/Zimu_Wang_Resume.pdf">Resume PDF</a> | <a href="https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra">Google Scholar</a> | <a href="https://github.com/zimuwang-real">GitHub</a> | <a href="https://www.linkedin.com/in/zimu-wang-32b62a289">LinkedIn</a></p>
 
-Research Interests
-======
+## Research Interests
 
 * Agent self-evolution and automated improvement
 * Code intelligence and software-engineering agents
@@ -20,15 +19,13 @@ Research Interests
 * Reinforcement learning and post-training
 * Reliable long-horizon agents
 
-Selected Work
-======
+## Selected Work
 
-* **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under ACL Rolling Review; targeting EACL 2027.** First-author work on automated code-efficiency optimization using reusable agent skills mined from slow and optimized program pairs.
-* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** — **Primary developer; built the project from 0→1.** An open-source framework for reproducible agent self-improvement under frozen evaluators and declared mutation boundaries, with auditable experiment lineage.
+* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** — **Lead developer; drove the project from 0→1.** An open-source recursive self-improvement framework that evolves agent prompts, skills, harnesses, and code while preserving frozen evaluators, declared mutation boundaries, and auditable Git-based experiment lineage.
+* **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under review via ACL Rolling Review.** First-author work on automated code-efficiency optimization that mines reusable Operator and Meta Skills, retrieves relevant skills for new programs, and composes optimization plans without execution feedback.
 
-Selected Experience
-======
+## Selected Experience
 
-* **LLM Engineering Intern, Douyin AI, ByteDance — Summer 2026:** worked on agent self-evolution, practical agent systems, and evaluation for long-horizon and code-oriented tasks.
-* **Researcher, Shanghai Jiao Tong University — Summer 2025–Spring 2026:** developed SFT and GRPO training pipelines for code models, then built EffiSkill and its scalable inference and evaluation workflows for code-efficiency optimization.
-* **Data 8 Tutor, UC Berkeley (Fall 2024):** led weekly tutoring sessions, a discussion section, and office hours covering Python, statistical inference, and data analysis.
+* **LLM Engineer Intern, ByteDance — Summer 2026:** drove RSIHub's development as lead developer and built agent skills, composable interfaces, and evaluation infrastructure for long-horizon systems.
+* **Researcher, Shanghai Jiao Tong University — Summer 2025–Spring 2026:** built EffiSkill and CodeJudge, including scalable code-optimization evaluation and SFT/reinforcement-learning pipelines for code-correctness assessment.
+* **Data 8 Tutor, UC Berkeley — Fall 2024:** led weekly tutoring sessions, a discussion section, and office hours covering Python-based analysis and visualization, hypothesis testing, regression, and classification.

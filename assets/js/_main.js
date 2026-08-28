@@ -33,9 +33,11 @@ let setTheme = (theme) => {
   if (use_theme === "dark") {
     $("html").attr("data-theme", "dark");
     $("#theme-icon").removeClass("fa-sun").addClass("fa-moon");
+    $("#theme-toggle > a").attr("aria-label", "Switch to light theme");
   } else if (use_theme === "light") {
     $("html").removeAttr("data-theme");
     $("#theme-icon").removeClass("fa-moon").addClass("fa-sun");
+    $("#theme-toggle > a").attr("aria-label", "Switch to dark theme");
   }
 };
 
@@ -66,7 +68,12 @@ $(document).ready(function () {
         });
 
   // Enable the theme toggle
-  $('#theme-toggle').on('click', toggleTheme);
+  $('#theme-toggle > a').on('click keydown', function (event) {
+    if (event.type === 'click' || event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleTheme();
+    }
+  });
 
   // Enable the sticky footer
   var bumpIt = function () {
