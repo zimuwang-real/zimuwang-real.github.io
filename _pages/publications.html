@@ -24,12 +24,11 @@ author_profile: true
         <h2>{{ category[1].title }}</h2><hr />
         {% assign title_shown = true %}
       {% endunless %}
-      {% include archive-single.html %}
+      {% include archive-single.html compact=true %}
     {% endfor %}
   {% endfor %}
 {% else %}
   {% for post in ordered_publications %}
-    {% include archive-single.html %}
+    {% include archive-single.html compact=true %}
   {% endfor %}
 {% endif %}
-
