@@ -28,6 +28,8 @@ I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027
 
 * **LLM Engineer Intern, ByteDance — Summer 2026:** drove RSIHub's development as lead developer and built agent skills, composable interfaces, and evaluation infrastructure for long-horizon systems.
 * **Researcher, Shanghai Jiao Tong University — Summer 2025–Spring 2026:** built EffiSkill and CodeJudge, including scalable code-optimization evaluation and SFT/reinforcement-learning pipelines for code-correctness assessment.
-* **Data 8 Tutor, UC Berkeley — Fall 2024:** led weekly tutoring sessions, a discussion section, and office hours covering Python-based analysis and visualization, hypothesis testing, regression, and classification.
 
-Reviewer for [Managing Agents that Manage Agents: Workshop on Responsible Use of Meta-Agents](https://meta-agents-workshop.github.io/), NeurIPS 2026.
+## Service
+
+* **Reviewer, NeurIPS 2026:** [Managing Agents that Manage Agents: Workshop on Responsible Use of Meta-Agents](https://meta-agents-workshop.github.io/).
+* **Data 8 Tutor, UC Berkeley — Fall 2024:** led weekly tutoring sessions, a discussion section, and office hours covering Python-based analysis and visualization, hypothesis testing, regression, and classification.

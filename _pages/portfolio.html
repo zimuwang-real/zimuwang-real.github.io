@@ -9,7 +9,9 @@ author_profile: true
 
 <p>These projects are part of <a href="https://simpleagentlab.com/">Simple Agent Lab</a>, an open-source research collective exploring simple yet effective methods for AI4AI and self-improving systems.</p>
 
+<div class="projects-list">
 {% assign projects = site.portfolio | sort: "priority" %}
 {% for post in projects %}
   {% include archive-single.html %}
 {% endfor %}
+</div>
