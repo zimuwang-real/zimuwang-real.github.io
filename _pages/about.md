@@ -31,5 +31,5 @@ I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027
 
 ## Service
 
-* **Reviewer, NeurIPS 2026:** [Managing Agents that Manage Agents: Workshop on Responsible Use of Meta-Agents](https://meta-agents-workshop.github.io/).
+* **Reviewer:** [NeurIPS 2026 Workshop on Responsible Use of Meta-Agents](https://meta-agents-workshop.github.io/).
 * **Data 8 Tutor, UC Berkeley — Fall 2024:** led weekly tutoring sessions, a discussion section, and office hours covering Python-based analysis and visualization, hypothesis testing, regression, and classification.
