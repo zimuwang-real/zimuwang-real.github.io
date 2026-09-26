@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Zimu Wang's UC Berkeley CS 180 computer vision and computational photography project portfolio.">
+  <link rel="canonical" href="https://zimuwang-real.github.io/cs180/">
+  <title>CS 180 Computer Vision Projects | Zimu Wang</title>
+  <style>
+    :root { color-scheme: light; --ink:#16202a; --muted:#52606d; --paper:#f6f5f1; --card:#fff; --accent:#214f6b; --line:#d7ddd9; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:var(--accent); text-underline-offset:3px; }
+    a:focus-visible { outline:3px solid #dc8a43; outline-offset:3px; }
+    img { display:block; max-width:100%; height:auto; }
+    .wrap { width:min(1060px, calc(100% - 44px)); margin:0 auto; }
+    .masthead { padding:20px 0; border-bottom:1px solid var(--line); }
+    .masthead .wrap { display:flex; justify-content:space-between; align-items:center; gap:20px; }
+    .brand { color:var(--ink); text-decoration:none; font-weight:700; letter-spacing:.02em; }
+    .site-link { font-size:.89rem; white-space:nowrap; }
+    .hero { padding:60px 0 44px; }
+    .eyebrow { margin:0 0 10px; color:var(--accent); font-size:.78rem; font-weight:750; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { font-family:Georgia,"Times New Roman",serif; line-height:1.12; }
+    h1 { margin:0; max-width:850px; font-size:clamp(2.7rem,6vw,5rem); letter-spacing:-.035em; }
+    .intro { max-width:720px; margin:20px 0 0; font-size:1.08rem; color:var(--muted); }
+    .quicknav { display:flex; flex-wrap:wrap; gap:8px; margin-top:30px; }
+    .quicknav a { padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:var(--card); text-decoration:none; font-size:.84rem; }
+    .quicknav a:hover { border-color:var(--accent); background:#ebf2f4; }
+    main { padding-bottom:70px; }
+    .project { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:30px; align-items:start; padding:34px; margin:20px 0; background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:0 6px 24px rgba(17,33,46,.035); scroll-margin-top:20px; }
+    .num { margin:0 0 8px; font-size:.78rem; font-weight:750; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; }
+    h2 { margin:0 0 13px; font-size:clamp(1.7rem,3vw,2.25rem); }
+    .project p { margin:0 0 14px; }
+    .project ul { margin:0; padding-left:1.2em; }
+    .project li { margin:6px 0; }
+    figure { margin:0; }
+    .media { overflow:hidden; border:1px solid var(--line); border-radius:9px; background:#edf0ef; }
+    .media img { width:100%; max-height:570px; object-fit:contain; }
+    figcaption { color:var(--muted); font-size:.82rem; margin-top:8px; }
+    .media-stack { display:grid; gap:15px; }
+    .two-up { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .two-up .media img { aspect-ratio:1/1; object-fit:contain; }
+    footer { border-top:1px solid var(--line); padding:25px 0 42px; color:var(--muted); font-size:.85rem; }
+    @media (max-width:760px) { .project { grid-template-columns:1fr; padding:22px; gap:20px; } .hero { padding-top:42px; } .two-up { grid-template-columns:1fr; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+  </style>
+</head>
+<body>
+  <header class="masthead"><div class="wrap">
+    <a class="brand" href="https://zimuwang-real.github.io/">Zimu Wang</a>
+    <a class="site-link" href="https://zimuwang-real.github.io/">Personal website ↗</a>
+  </div></header>
+
+  <div class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">UC Berkeley · CS 180 · Fall 2025</p>
+      <h1 id="page-title">Computer vision &amp; computational photography</h1>
+      <p class="intro">Six course projects spanning camera geometry, image alignment, multiscale processing, automatic mosaics, neural radiance fields, and image generation. The examples below come from my retained project notebooks, images, and reports.</p>
+      <nav class="quicknav" aria-label="Jump to a project">
+        <a href="#p0">00 Camera</a><a href="#p1">01 Colorization</a><a href="#p2">02 Frequencies</a><a href="#p3">03 Mosaics</a><a href="#p4">04 NeRF</a><a href="#p5">05 Generative models</a>
+      </nav>
+    </section>
+
+    <main>
+      <article class="project" id="p0" aria-labelledby="p0-title">
+        <div><p class="num">Project 00 / Camera geometry</p><h2 id="p0-title">Perspective &amp; dolly zoom</h2>
+          <p>I photographed close and distant views to study how camera position and focal length change apparent perspective, then assembled a dolly-zoom sequence.</p>
+          <ul><li>Compared facial distortion and architectural perspective across shooting distances.</li><li>Kept a subject roughly fixed in frame while changing camera distance and zoom.</li></ul>
+        </div>
+        <figure><div class="media"><img src="assets/dolly-zoom.gif" alt="Animated dolly zoom from the camera geometry project" loading="lazy"></div><figcaption>Dolly-zoom sequence from Project 0.</figcaption></figure>
+      </article>
+
+      <article class="project" id="p1" aria-labelledby="p1-title">
+        <div><p class="num">Project 01 / Image alignment</p><h2 id="p1-title">Colorizing glass-plate images</h2>
+          <p>I aligned three vertically stacked monochrome exposures into one color image.</p>
+          <ul><li>Built a coarse-to-fine image pyramid and used Sobel edge maps for alignment.</li><li>Searched channel shifts with normalized correlation, then cropped border artifacts.</li></ul>
+        </div>
+        <figure><div class="media"><img src="assets/colorized-cathedral.png" alt="Colorized historic cathedral scene after aligning three image channels" loading="lazy"></div><figcaption>Aligned RGB reconstruction from the notebook output.</figcaption></figure>
+      </article>
+
+      <article class="project" id="p2" aria-labelledby="p2-title">
+        <div><p class="num">Project 02 / Spatial and frequency domains</p><h2 id="p2-title">Filters, hybrid images &amp; blending</h2>
+          <p>I implemented convolution and several multiscale image-processing techniques to test how structure changes across spatial frequencies.</p>
+          <ul><li>Compared a from-scratch convolution with SciPy and explored finite differences, derivative-of-Gaussian filters, and sharpening.</li><li>Built hybrid images, Gaussian and Laplacian stacks, and multiresolution blends.</li></ul>
+        </div>
+        <figure><div class="media"><img src="assets/hybrid-image.jpg" alt="A hybrid cat image made by combining low and high spatial frequencies" loading="lazy"></div><figcaption>One hybrid-image result; its appearance changes with viewing distance.</figcaption></figure>
+      </article>
+
+      <article class="project" id="p3" aria-labelledby="p3-title">
+        <div><p class="num">Project 03 / Registration</p><h2 id="p3-title">Manual &amp; automatic photo mosaics</h2>
+          <p>I first stitched photographs with manually selected correspondences, then automated the correspondence-finding stage.</p>
+          <ul><li>Estimated homographies and warped images into a shared canvas.</li><li>Used Harris corners, adaptive non-maximal suppression, normalized patch descriptors, ratio-test matching, and RANSAC.</li><li>Compared automatic mosaics with manual-point results on three image pairs.</li></ul>
+        </div>
+        <figure><div class="media"><img src="assets/automatic-mosaic-comparison.png" alt="Automatic and manual panorama results shown side by side" loading="lazy"></div><figcaption>Automatic result at left, manual correspondences at right. The visible distortions show where alignment and blending still need work.</figcaption></figure>
+      </article>
+
+      <article class="project" id="p4" aria-labelledby="p4-title">
+        <div><p class="num">Project 04 / Neural rendering</p><h2 id="p4-title">NeRF from real photographs</h2>
+          <p>I trained a PyTorch neural radiance field on a small model car, using photos rather than only the provided synthetic scene.</p>
+          <ul><li>Calibrated the camera, estimated poses from ArUco markers with <code>solvePnP</code>, and prepared 45 usable views: 36 for training and nine held out.</li><li>Implemented rays, positional encoding, point sampling, a radiance-field MLP, and volume rendering.</li><li>Tracked held-out PSNR and rendered a novel camera path. The real-scene reconstruction remained visibly rougher than the synthetic result.</li></ul>
+        </div>
+        <div class="media-stack">
+          <figure><div class="media"><img src="assets/nerf-novel-view.gif" alt="Novel camera path rendered by the NeRF model around a small model car" loading="lazy"></div><figcaption>Rendered camera path from the real-scene model.</figcaption></figure>
+          <figure><div class="media"><img src="assets/nerf-real-scene.png" alt="A reconstructed view of the model car with an ArUco marker visible" loading="lazy"></div><figcaption>A single reconstructed view.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="project" id="p5" aria-labelledby="p5-title">
+        <div><p class="num">Project 05 / Generative models</p><h2 id="p5-title">Denoising &amp; flow matching</h2>
+          <p>I implemented and trained PyTorch UNets for image denoising and time- and class-conditioned flow matching on MNIST.</p>
+          <ul><li>Inspected training curves, denoising at noise levels outside training, and generated samples.</li><li>Used a pretrained diffusion model in a separate notebook for iterative denoising and image-editing experiments.</li></ul>
+        </div>
+        <div class="media-stack">
+          <figure><div class="media"><img src="assets/class-conditioned-flow-samples.png" alt="Grid of MNIST digits sampled from a class-conditioned flow model" loading="lazy"></div><figcaption>Class-conditioned samples from the saved notebook output.</figcaption></figure>
+          <figure><div class="media"><img src="assets/denoising-ood.png" alt="Denoising output at several noise levels" loading="lazy"></div><figcaption>Out-of-distribution denoising inspection.</figcaption></figure>
+        </div>
+      </article>
+
+    </main>
+  </div>
+  <footer><div class="wrap">Zimu Wang · UC Berkeley CS 180, Fall 2025 · <a href="https://zimuwang-real.github.io/">Back to personal website</a></div></footer>
+</body>
+</html>
