@@ -21,7 +21,7 @@ I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027
 
 ## Selected Work
 
-* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** [![GitHub stars](https://img.shields.io/github/stars/simple-agent-lab/RSIHub?style=social)](https://github.com/simple-agent-lab/RSIHub/stargazers) — **Lead developer; drove the project from 0→1.** An open-source recursive self-improvement framework that evolves agent prompts, skills, harnesses, and code while preserving frozen evaluators, declared mutation boundaries, and auditable Git-based experiment lineage.
+* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** [![GitHub stars](https://img.shields.io/github/stars/simple-agent-lab/RSIHub?style=social)](https://github.com/simple-agent-lab/RSIHub/stargazers) — **Lead developer; drove the project from 0→1.** An open-source recursive self-improvement framework that evolves agent prompts, skills, harnesses, and code while preserving frozen evaluators, declared mutation boundaries, and auditable Git-based experiment lineage. The accompanying paper was accepted to the **NeurIPS 2026 Meta-Agents Workshop**.
 * **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under review via ACL Rolling Review.** First-author work on automated code-efficiency optimization that mines reusable Operator and Meta Skills, retrieves relevant skills for new programs, and composes optimization plans without execution feedback.
 
 ## Selected Experience
