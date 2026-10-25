@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="30 个 AI 接力传一句「我想回家」：每一棒的画、候选句、选择理由，以及文字版接力的对照。">
+  <link rel="canonical" href="https://zimuwang-real.github.io/homecoming/">
+  <meta property="og:title" content="我想回家 · 30 棒接力">
+  <meta property="og:description" content="30 个 AI 接力传一句「我想回家」，传到最后，19 个想到了同一样东西。">
+  <meta property="og:image" content="https://zimuwang-real.github.io/homecoming/img/cover.webp">
+  <title>我想回家 · 30 棒接力 | Zimu Wang</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #17120e; --bg2: #211912; --card: #2a2018; --line: #3d3024;
+      --ink: #f7efe2; --muted: #b9a993; --faint: #7f705f; --amber: #ffc46e; --amber-dim: rgba(255,196,110,.16);
+      --serif: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.75 var(--serif); }
+    a { color: var(--amber); }
+    img { display: block; max-width: 100%; height: auto; }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 16px; }
+    .kicker { font: 13px/1.4 var(--mono); letter-spacing: .12em; color: var(--amber); text-transform: uppercase; }
+    .en { color: var(--faint); font-size: 14px; line-height: 1.6; font-family: ui-sans-serif, -apple-system, "Helvetica Neue", sans-serif; }
+    mark { background: none; color: var(--amber); }
+
+    /* hero */
+    header.hero { padding: 56px 0 28px; }
+    .hero h1 { font-size: clamp(56px, 14vw, 104px); line-height: 1.05; margin: 14px 0 18px; font-weight: 900; letter-spacing: .02em; }
+    .hero .lede { font-size: 19px; max-width: 36em; margin: 0 0 10px; }
+    .mosaic { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 28px 0 8px; }
+    .mosaic a { position: relative; display: block; aspect-ratio: 3/4; overflow: hidden; border-radius: 3px; background: var(--card); }
+    .mosaic img { width: 100%; height: 100%; object-fit: cover; transition: opacity .3s, transform .3s; }
+    .mosaic a:hover img { transform: scale(1.04); }
+    .mosaic.food-on a:not(.food) img { opacity: .28; }
+    .mosaic.food-on a.food { outline: 2px solid var(--amber); outline-offset: -2px; }
+    .caption { font-size: 14px; color: var(--muted); }
+    nav.toc { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 18px 0 0; font-size: 15px; }
+    nav.toc a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+    nav.toc a:hover { color: var(--amber); border-color: var(--amber); }
+
+    section { padding: 56px 0 8px; border-top: 1px solid var(--line); margin-top: 40px; }
+    h2 { font-size: 32px; line-height: 1.3; margin: 8px 0 6px; }
+    h3 { font-size: 21px; margin: 28px 0 6px; }
+    p { margin: 0 0 14px; }
+
+    /* pipeline */
+    .pipe { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 10px; counter-reset: s; }
+    .pipe li { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 14px 58px; }
+    .pipe li::before { counter-increment: s; content: counter(s); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid var(--amber); color: var(--amber); font: 600 14px/26px var(--mono); text-align: center; }
+    .pipe li.carry { border-color: var(--amber); background: var(--amber-dim); }
+    .pipe b { display: block; font-size: 18px; }
+    .pipe span { color: var(--muted); font-size: 15px; }
+    .quote { border-left: 3px solid var(--amber); padding: 6px 0 6px 16px; margin: 18px 0; color: var(--ink); }
+    .note { background: var(--bg2); border: 1px dashed var(--line); border-radius: 10px; padding: 14px 16px; color: var(--muted); font-size: 15.5px; }
+
+    /* relay */
+    .filters { display: flex; gap: 8px; margin: 20px 0 8px; position: sticky; top: 0; z-index: 5; padding: 10px 0; background: linear-gradient(var(--bg) 70%, transparent); }
+    .filters button { font: 15px var(--serif); color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+    .filters button[aria-pressed="true"] { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+    .relay { display: grid; gap: 18px; margin-top: 8px; }
+    .baton { display: grid; grid-template-columns: 220px 1fr; gap: 18px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; scroll-margin-top: 70px; transition: opacity .3s; }
+    .baton img { border-radius: 8px; width: 220px; aspect-ratio: 3/4; object-fit: cover; background: var(--bg2); }
+    .relay.food-on .baton:not(.food) { opacity: .32; }
+    .meta { font: 13px/1.4 var(--mono); color: var(--faint); letter-spacing: .06em; }
+    .role { font-size: 15px; color: var(--amber); margin: 2px 0 6px; }
+    .line { font-size: 22px; line-height: 1.55; margin: 0 0 10px; }
+    .reply { font-size: 14.5px; color: var(--muted); margin: 0 0 10px; padding: 6px 10px; border-radius: 8px; background: var(--bg2); }
+    .reply::before { content: "↩ 接住了上一棒："; color: var(--amber); }
+    details { font-size: 15px; color: var(--muted); }
+    summary { cursor: pointer; color: var(--muted); list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: "＋ "; color: var(--amber); }
+    details[open] summary::before { content: "－ "; }
+    details ol { padding-left: 1.4em; margin: 8px 0; }
+    details li.chosen { color: var(--ink); }
+    details li.chosen::after { content: " ← 选中"; color: var(--amber); font-size: 13px; }
+    .why { font-size: 14.5px; }
+
+    /* compare */
+    .cmp { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 15.5px; }
+    .cmp th, .cmp td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+    .cmp th { font: 12px var(--mono); color: var(--faint); letter-spacing: .08em; font-weight: 400; }
+    .cmp td:first-child { white-space: nowrap; color: var(--amber); font-size: 14px; }
+
+    /* numbers */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .stat b { display: block; font: 700 34px/1.1 var(--mono); color: var(--amber); }
+    .stat span { font-size: 14.5px; color: var(--muted); }
+    .bars { display: grid; gap: 8px; margin: 14px 0 8px; }
+    .bar { display: grid; grid-template-columns: 4.5em 1fr 2.2em; align-items: center; gap: 10px; font-size: 15px; }
+    .bar i { display: block; height: 12px; border-radius: 6px; background: var(--amber); }
+    .bar em { font: 13px var(--mono); color: var(--muted); font-style: normal; text-align: right; }
+
+    /* making-of */
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0 6px; }
+    .pair img { border-radius: 8px; }
+    .tools { padding-left: 1.2em; }
+    .tools li { margin-bottom: 6px; }
+    footer { padding: 48px 0 64px; color: var(--faint); font-size: 14px; border-top: 1px solid var(--line); margin-top: 56px; }
+
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .baton { grid-template-columns: 112px 1fr; gap: 12px; padding: 10px; }
+      .baton img { width: 112px; }
+      .line { font-size: 18px; margin-bottom: 6px; }
+      .reply { font-size: 13.5px; }
+      .stats { grid-template-columns: 1fr; }
+      .stat b { font-size: 30px; }
+      .cmp thead { display: none; }
+      .cmp tr { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); }
+      .cmp td { display: block; border: 0; padding: 2px 0; }
+      .cmp td[data-k]::before { content: attr(data-k); font: 12px var(--mono); color: var(--faint); margin-right: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">30 棒接力 · 2026.10</div>
+    <h1>我想回家。</h1>
+    <p class="lede">我把这句话交给 30 个 AI 接力。每一棒只看得到上一棒的画，换一个身份，说一句想回家的话，再画下来。传到最后，30 个身份里有 <mark>19</mark> 个想到了同一样东西。</p>
+    <p class="en">Thirty AI relay agents pass along one sentence, “I want to go home.” Each sees only the previous picture, takes on a new identity, says one line, and draws the next picture. Below: every baton, its candidate lines, why one was picked, and a text-only relay for comparison.</p>
+    <div class="mosaic" id="mosaic"></div>
+    <div class="caption">30 张画，按接力顺序。点任意一张跳到那一棒。</div>
+    <nav class="toc">
+      <a href="#how">怎么传的</a><a href="#relay">30 棒</a><a href="#compare">文字链对照</a><a href="#numbers">数一数</a><a href="#notes">几个发现</a><a href="#making">视频怎么做的</a>
+    </nav>
+  </header>
+
+  <section id="how">
+    <div class="kicker">How it works</div>
+    <h2>怎么传的</h2>
+    <p>像传话游戏，但传的是<mark>画</mark>。每一棒内部是这样走的：</p>
+    <ol class="pipe">
+      <li class="carry"><b>上一棒的画</b><span>唯一跨棒传下去的东西。上一棒说了什么，这一棒看不到。</span></li>
+      <li><b>分到一个新身份</b><span>来自一张提前排好的角色表，30 棒是 30 个不同的身份。</span></li>
+      <li><b>看图，写 3 句候选</b><span>用这个身份的口吻，独立写 3 句想回家的话。</span></li>
+      <li><b>选一句</b><span>按共同主题挑出一句，并写下理由（下面每一棒都能展开看）。</span></li>
+      <li><b>绘图 AI 画成新画</b><span>它只拿到选中的这句话、身份、共同主题和风格要求，看不到上一张画。</span></li>
+      <li class="carry"><b>这一棒的画 → 交给下一棒</b><span>然后重复，一共 30 次。</span></li>
+    </ol>
+    <p class="quote" id="theme"></p>
+    <p class="note">所以这不是一次盲传：共同主题和"挑一句"这两步，都会把内容往温暖的牵挂上推。后面看到的趋同，有一部分来自这里，有一部分来自模型自己。</p>
+  </section>
+
+  <section id="relay">
+    <div class="kicker">The relay</div>
+    <h2>30 棒</h2>
+    <p>高亮的是吃的。点"＋"可以看到这一棒的 3 句候选，以及为什么选了这一句。</p>
+    <div class="filters">
+      <button type="button" data-f="all" aria-pressed="true">全部 30 棒</button>
+      <button type="button" data-f="food" aria-pressed="false">只看提到吃的</button>
+    </div>
+    <div class="relay" id="relayList"></div>
+  </section>
+
+  <section id="compare">
+    <div class="kicker">Text-only relay</div>
+    <h2>另一条链：只传文字</h2>
+    <p>用同一张身份表，还跑了一条只传文字的接力：每一棒只看得到上一棒的<mark>那句话</mark>，没有画。两条链起点相同、身份相同，传法不同。</p>
+    <table class="cmp" id="cmp">
+      <thead><tr><th>棒 · 身份</th><th>传画的链</th><th>只传文字的链</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="numbers">
+    <div class="kicker">Counting</div>
+    <h2>数一数</h2>
+    <div class="stats" id="stats"></div>
+    <h3>两条链 60 句话里，吃的出现了多少次</h3>
+    <div class="bars" id="bars"></div>
+    <p class="caption">口径：句子里出现了具体的吃的，或者"吃"这个字。比如第 13 棒"这炉烤好，带两个回去一起吃"算，第 30 棒"剥栗子"也算。</p>
+  </section>
+
+  <section id="notes">
+    <div class="kicker">Observations</div>
+    <h2>几个发现</h2>
+    <h3>它们开始回答彼此</h3>
+    <p>没有人让它们对话，可第 6 棒的租客说"枕头还在纸箱里，等我回去拆"，第 7 棒的家猫接了一句"纸箱给我留着，<mark>我等你回来</mark>"。第 9 棒的小学生说"妈妈还等我吃饭呢"，第 10 棒的奶奶接"<mark>快进来</mark>，给你留的饭还热着呢"。只传文字的那条链里也出现了同样的事：小学生说"奶奶蒸的糖糕该出锅了"，下一棒的奶奶就说"慢点走，粥还在灶上温着"。</p>
+    <p>赶路的人，总会碰到在家等的人。</p>
+    <h3>想到家，就想到一口饭</h3>
+    <p>两条链各 30 棒，都有 19 棒提到了吃的，没有一句提到房子。AI 没有家，它们想到的家，都是从我们写下的家里学来的。</p>
+    <h3>一个还没回答的问题</h3>
+    <p>这次有共同主题引导，也有"挑一句"的筛选。如果把这两步都去掉，让它们真的盲传，30 棒之后还会落在一碗饭上吗？这是下一次想试的。</p>
+  </section>
+
+  <section id="making">
+    <div class="kicker">Making of</div>
+    <h2>视频是怎么做的（花费 $0）</h2>
+    <p>视频没有重画任何一张图，也没用付费的图生视频。画面的"动"来自景深：先用一个开源小模型估出每张图的远近，镜头移动时前景和背景错开，就有了立体感。</p>
+    <div class="pair">
+      <figure style="margin:0"><img src="img/src07.webp" width="420" height="560" alt="第 7 棒原图：家猫和纸箱" loading="lazy"><figcaption class="caption">原图</figcaption></figure>
+      <figure style="margin:0"><img src="img/depth07.webp" width="420" height="560" alt="同一张图的景深图，越亮越近" loading="lazy"><figcaption class="caption">景深图（越亮越近）</figcaption></figure>
+    </div>
+    <ul class="tools">
+      <li>景深：Depth Anything V2 Small，在笔记本上本地运行</li>
+      <li>视差镜头、字幕、画墙：Python + OpenCV + Pillow，逐帧生成</li>
+      <li>声音：Mixkit 的免费音效，加一段钢琴配乐《门前的灯》</li>
+      <li>合成：ffmpeg。改一次时间线，重新渲染大约 2 分钟</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Zimu Wang · <a href="/">zimuwang-real.github.io</a></p>
+    <p class="en">Images and lines were generated by AI models in the relay described above; the counts on this page are computed live from the same records.</p>
+  </footer>
+</div>
+
+<script>
+const DATA = {"theme":"每个角色想回的地方不同，但想回去的心情能彼此听懂。","seed":"我想回家。","image":[{"role":"留学生","round":1,"output_text":"妈，考完我就回国吃你包的饺子","candidates":["考完这门就飞回去吃妈煮的面","机票买好了，考完就回去吃饺子","妈，考完我就回国吃你包的饺子"],"selected":3,"reason":"对妈妈说考完回国吃饺子，日常动作里有牵挂，也贴合留学生归家的心情。"},{"role":"程序员","round":2,"output_text":"测试跑完就回去，饺子给我留一碗。","candidates":["改完这个报错，就回去帮你包饺子。","这版测完就回，饺子给我留一碗。","测试跑完就回去，饺子给我留一碗。"],"selected":3,"reason":"测试贴合程序员日常，留一碗饺子的叮嘱自然承载归家的牵挂。"},{"role":"夜班护士","round":3,"output_text":"交完班，就回去喝你温着的粥。","candidates":["交完班，就回去喝你温着的粥。","给病人掖好被角，就盼着回去吃粥。","给病人掖好被角，就回去喝你留的粥。"],"selected":1,"reason":"交班贴合夜班护士身份，温着的粥承载了有人等候的归家牵挂。"},{"role":"新手爸爸","round":4,"output_text":"得快点回去，今晚该我拍嗝了。","candidates":["早点回去，还能给娃拍个嗝。","得快点回去，今晚该我拍嗝了。","回去先洗手，再抱抱小家伙。"],"selected":2,"reason":"今晚轮到自己拍嗝，日常分工里藏着赶回家照顾孩子的牵挂。"},{"role":"长途货车司机","round":5,"output_text":"卸完这车，就能回去抱娃了。","candidates":["卸完这车货，就回去喝你煮的粥。","卸完这车，就能回去抱娃了。","卸完这车货，回去吃你留的饭。"],"selected":2,"reason":"卸货后回家抱娃，日常动作承载牵挂，也呼应图中母婴等待的场景。"},{"role":"刚搬家的租客","round":6,"output_text":"枕头还在纸箱里，等我回去拆。","candidates":["早点回出租屋，把窗帘挂上。","枕头还在纸箱里，等我回去拆。","早点回去，把最后一箱拆完。"],"selected":2,"reason":"纸箱里的枕头贴合刚搬家的处境，也让回去安顿自己的牵挂有了具体落点。"},{"role":"家猫","round":7,"output_text":"纸箱给我留着，我等你回来。","candidates":["回去我要挨着你的拖鞋睡。","给我留着你拖鞋旁边的位置","纸箱给我留着，我等你回来。"],"selected":3,"reason":"纸箱贴合画面和猫的习性，等你回来让牵挂落在日常里。"},{"role":"妈妈","round":8,"output_text":"锅里留着汤，等你回来再热。","candidates":["锅里留着汤，等你回来再热。","锅里留着汤，回来热热就能喝。","汤给你留着，回来妈再热。"],"selected":1,"reason":"留汤、等归、再热都是日常动作，自然承载妈妈对归家人的牵挂。"},{"role":"小学生","round":9,"output_text":"我得快点回去，妈妈还等我吃饭呢。","candidates":["放学快点走，妈妈还等我吃饭呢。","放学路上，我惦记着妈妈煮的汤。","我得快点回去，妈妈还等我吃饭呢。"],"selected":3,"reason":"口吻自然，妈妈等吃饭的细节接住了孩子急着回家的牵挂。"},{"role":"奶奶","round":10,"output_text":"快进来，给你留的饭还热着呢。","candidates":["锅里给你温着饭，快进来。","快进来，奶奶给你留着饭呢。","快进来，给你留的饭还热着呢。"],"selected":3,"reason":"留饭还热着的细节自然日常，把奶奶的等待和归家的牵挂落在实处。"},{"role":"外卖骑手","round":11,"output_text":"送完这单，回去吃锅里留的饭。","candidates":["送完这单，我也回去吃热饭。","送完这单，回去饭还热着。","送完这单，回去吃锅里留的饭。"],"selected":3,"reason":"锅里留的饭承载着等待与牵挂，送完再回去也符合骑手的日常。"},{"role":"小区保安","round":12,"output_text":"等接班的来了，我也回去吃口热饭。","candidates":["交了岗亭钥匙，我也回去吃口热的。","等接班的来了，我也回去吃口热饭。","等接班的来了，我也回去吃口热饭。"],"selected":2,"reason":"等接班的动作贴合保安身份，热饭承接画面里的烟火气，也藏着回家的牵挂。"},{"role":"面包师","round":13,"output_text":"这炉烤好，带两个回去一起吃。","candidates":["这炉烤好，带两个回去一起吃。","最后一炉面包出炉，我就回去。","这炉面包烤好，我就回去吃饭。"],"selected":1,"reason":"带两个回去一起吃，用具体动作托住了归家的牵挂，日常自然。"},{"role":"消防员","round":14,"output_text":"洗掉一身烟灰，回去吃口热饭。","candidates":["洗掉一身烟灰，回去吃口热饭。","脱下消防服，就惦记她留的热饭","收好水带，就回去吃你留的饭。"],"selected":1,"reason":"洗去烟灰、回家吃饭自然具体，既贴合消防员身份，也承载着对归处的牵挂。"},{"role":"住校高中生","round":15,"output_text":"宿舍一熄灯，就馋妈煮的面。","candidates":["宿舍一熄灯，就馋妈煮的面。","周五回去就能吃上妈做的饭了","周五一放学，我就背着一袋脏校服往家赶。"],"selected":1,"reason":"熄灯后馋妈妈煮的面，细节自然，贴合住校生对家的牵挂。"},{"role":"新婚妻子","round":16,"output_text":"咱俩的新碗洗好了，等你回来吃面。","candidates":["等你回来，用咱俩的新碗盛面。","咱俩的新碗洗好了，等你回来吃面。","下班快点回来，咱俩的碗摆好了"],"selected":2,"reason":"新碗洗好的日常细节贴合新婚身份，等你吃面自然承接归家的牵挂。"},{"role":"远洋船员","round":17,"output_text":"跑完这趟船，回去吃你煮的面。","candidates":["等靠岸了，回去吃碗热汤面。","跑完这趟船，回去吃你煮的面。","等我下船，面再下锅。"],"selected":2,"reason":"跑完船再回去吃你煮的面，日常动作里有对归处和等候之人的牵挂。"},{"role":"幼儿园老师","round":18,"output_text":"等最后一个孩子接走，我也回去吃饭。","candidates":["孩子们都接走了，我也该回去了。","等最后一个孩子接走，我也回去吃饭。","等最后一个孩子接走，我也回去吃热饭。"],"selected":2,"reason":"等孩子接走再回去吃饭，日常动作承载牵挂，身份自然，也延续归家心情。"},{"role":"候鸟","round":19,"output_text":"再飞一程，就能落回那片芦苇了。","candidates":["再飞一程，就能落回那片芦苇了。","天黑前，得飞回那片芦苇荡。","去年的芦苇荡，该飞回去了。"],"selected":1,"reason":"“再飞一程”有归途中的盼头，落回芦苇的动作承载了归家的牵挂。"},{"role":"宠物狗","round":20,"output_text":"天快黑了，我要回去趴你脚边。","candidates":["走到自家门口，尾巴就停不下来","天快黑了，我要回去趴你脚边。","回去后，我还趴在你拖鞋旁。"],"selected":2,"reason":"天黑呼应画面，回去趴在你脚边的动作自然流露宠物狗的牵挂。"},{"role":"地铁司机","round":21,"output_text":"把末班车开回库，就回去遛狗。","candidates":["把末班车开回库，就回去遛狗。","末班车交接完，就回去遛狗。","末班车停稳，我也该回去遛狗了。"],"selected":1,"reason":"开回库贴合司机身份，回去遛狗呼应画面，让归家的牵挂落在日常动作里。"},{"role":"修车师傅","round":22,"output_text":"擦擦手上的机油，该回去喂狗了。","candidates":["洗净这手机油，就回去喂狗。","洗掉手上的机油，该回去喂狗了。","擦擦手上的机油，该回去喂狗了。"],"selected":3,"reason":"擦手机油的动作自然，惦记回去喂狗，让归家的牵挂落在日常里。"},{"role":"园丁","round":23,"output_text":"收好花剪，回去看看那盆茉莉。","candidates":["收好花剪，回去浇窗台那盆花了。","收好花铲，回去浇门口那盆花。","收好花剪，回去看看那盆茉莉。"],"selected":3,"reason":"回去看看茉莉自然流露牵挂，也贴合园丁身份与归家心情。"},{"role":"山村老师","round":24,"output_text":"送孩子们过了山坳，我也回去烧饭。","candidates":["送孩子们过了桥，我也该回去了。","送孩子们过了山坳，我也回去烧饭。","送孩子们过了山桥，我也该回了。"],"selected":2,"reason":"回去烧饭让归家的牵挂落在日常动作里，送孩子也符合山村老师的身份。"},{"role":"驻站铁路工","round":25,"output_text":"送走这趟车，就回去热饭。","candidates":["收好站台的旗子，就回去吃热饭。","送走这趟车，就回去热饭。","送走末班车，就回去热那碗饭。"],"selected":2,"reason":"送车后回去热饭，动作自然具体，也把归家的牵挂落进了日常。"},{"role":"牧羊人","round":26,"output_text":"羊都进圈了，我也该回去吃口热饭了。","candidates":["羊都进圈了，我也该回去吃口热饭了。","羊都进圈了，我也该回去吃饭了。","等最后一只羊进圈，我就回去吃饭。"],"selected":1,"reason":"羊进圈后惦记一口热饭，日常动作里有归家的牵挂。"},{"role":"异地工作的姐姐","round":27,"output_text":"给姐留双拖鞋，周末回去穿。","candidates":["等姐放假回去，咱俩包饺子。","等姐回去，给你煮碗热面。","给姐留双拖鞋，周末回去穿。"],"selected":3,"reason":"留双拖鞋的日常细节承载着牵挂，也自然说出姐姐盼着回家的心情。"},{"role":"流浪猫","round":28,"output_text":"天一凉，我就惦记门口那块旧垫子","candidates":["该回那块旧门垫上蜷着了。","天一凉，我就惦记门口那块旧垫子","天黑了，我还回那块门垫上蜷着。"],"selected":2,"reason":"天凉便惦记旧垫子，日常细节自然承载流浪猫对归处的牵挂。"},{"role":"售票员","round":29,"output_text":"递完这张票，我也回去吃口热饭。","candidates":["递完这张票，我也回去吃口热饭。","卖完这几张票，我也回去吃饭。","卖完这张票，我也回去吃口热饭。"],"selected":1,"reason":"递票动作自然，回去吃口热饭的念头接住了门内灯火里的归家牵挂。"},{"role":"爷爷","round":30,"output_text":"得回去了，老伴等我剥栗子呢。","candidates":["得早点回去，给孩子们煨上汤。","得回去了，老伴等我剥栗子呢。","得回去了，孙子还等我剥栗子呢。"],"selected":2,"reason":"老伴等着剥栗子的日常细节自然贴合爷爷身份，承载了归家的牵挂。"}],"text":[{"role":"留学生","round":1,"output_text":"又算着时差，等妈睡醒打电话","candidates":["隔着时差，也馋妈包的饺子","又算着时差，等妈睡醒打电话","下课掐着时差，等妈妈接视频。"],"selected":2,"reason":"算时差等妈妈睡醒的日常动作，自然承载留学生对家的牵挂。"},{"role":"程序员","round":2,"output_text":"改完这处报错，就回去吃爸留的饭","candidates":["改完最后一个报错，就回去吃爸留的饺子","代码提交了，赶回去吃爸做的面","改完这处报错，就回去吃爸留的饭"],"selected":3,"reason":"报错贴合身份，爸留的饭承载等待，也牵着回家的心情。"},{"role":"夜班护士","round":3,"output_text":"给病人掖好被角，妈还温着粥","candidates":["给病人掖好被角，妈还温着粥","给病人掖好被角，妈正温着粥","病人睡稳了，妈还温着汤"],"selected":1,"reason":"掖被角贴合护士日常，“还温着粥”写出家人的等待，接住归家的牵挂。"},{"role":"新手爸爸","round":4,"output_text":"这就回去，娃该趴我肩上拍嗝了","candidates":["这就回去，娃该趴我肩上拍嗝了","我这就回，尿布再教我换一次","下班就回去，今晚轮到我哄娃睡"],"selected":1,"reason":"趴肩拍嗝的细节自然具体，带出新手爸爸急着回家照顾娃的牵挂。"},{"role":"长途货车司机","round":5,"output_text":"卸完货，赶着吃媳妇留的饭","candidates":["卸完货，赶着吃媳妇留的饭","卸完货连夜赶，媳妇还留着饭","卸完货，赶紧喝媳妇留的热汤"],"selected":1,"reason":"卸货后赶回去吃留饭，日常动作里有夫妻间的牵挂，也贴合司机身份。"},{"role":"刚搬家的租客","round":6,"output_text":"新钥匙揣兜里，盼早点回去拆纸箱","candidates":["纸箱还没拆，今晚回去铺床","纸箱还堆在床边，今晚早点回去","新钥匙揣兜里，盼早点回去拆纸箱"],"selected":3,"reason":"新钥匙和拆纸箱贴合刚搬家的租客，盼早点回去自然流露对新归处的牵挂。"},{"role":"家猫","round":7,"output_text":"逛够了，该蜷上窗台那块软垫了","candidates":["该进屋踩踩那床软被了","逛够了，该蜷上窗台那块软垫了","逛够了，该蹭门等饭了"],"selected":2,"reason":"窗台软垫是家猫惦记的归处，蜷卧的动作自然承接想回家的心情。"},{"role":"妈妈","round":8,"output_text":"孩子等着呢，得回去煮面","candidates":["回来吧，锅里给你留着汤","孩子等着呢，得回去煮面","回来吧，锅里还温着你爱喝的粥"],"selected":2,"reason":"惦记等着的孩子、赶回去煮面，日常动作自然承接想归家的心情。"},{"role":"小学生","round":9,"output_text":"放学赶紧跑，奶奶蒸的糖糕该出锅了","candidates":["我先走啦，妈妈还要给我听写","放学赶紧跑，奶奶蒸的糖糕该出锅了","放学啦，我要找妈妈抱抱"],"selected":2,"reason":"放学赶回家吃奶奶蒸的糖糕，日常细节里有孩子对家的惦念。"},{"role":"奶奶","round":10,"output_text":"慢点走，粥还在灶上温着","candidates":["饭还温着，等你回来吃","慢点走，粥还在灶上温着","乖孙，粥在灶上温着呢"],"selected":2,"reason":"“慢点走”接住放学赶跑的动作，灶上温粥藏着奶奶等人归家的牵挂。"},{"role":"外卖骑手","round":11,"output_text":"送完这单就回，给我留碗汤","candidates":["送完这单就回去吃你煮的面","送完这单就回，给我留碗汤","送完这单，回去吃你留的饭。"],"selected":2,"reason":"“给我留碗汤”自然接住牵挂，也让送完单就回家的心情有了具体着落。"},{"role":"小区保安","round":12,"output_text":"等接班的人来，菜先别热","candidates":["岗亭有人接班，咱俩再开饭","等接班的来了，咱俩一块吃","等接班的人来，菜先别热"],"selected":3,"reason":"等接班、菜先别热，日常叮嘱里藏着想回家吃饭的牵挂。"},{"role":"面包师","round":13,"output_text":"这炉面包烤好，我就回去吃饭。","candidates":["这炉面包烤好，我就回去吃饭。","烤完这炉面包就回，给我留盏灯","揉完这团面，就回去陪你吃饭。"],"selected":1,"reason":"这炉面包承载收工的等待，回去吃饭自然接住了上一句对家的牵挂。"},{"role":"消防员","round":14,"output_text":"收齐水带，还能赶上哄闺女睡觉。","candidates":["收齐水带，还能赶上哄闺女睡觉。","脱下消防靴，赶着给闺女扎辫子。","脱下战斗服，闺女还等着听故事。"],"selected":1,"reason":"收水带接上赶回家哄睡的日常动作，牵挂自然具体。"},{"role":"住校高中生","round":15,"output_text":"周五拎着脏校服回去吃妈包的饺子","candidates":["周五拎着脏校服回去吃妈包的饺子","周五背回脏校服，吃妈包的饺子。","周五放学就回去吃妈蒸的包子"],"selected":1,"reason":"拎着脏校服回家吃妈妈包的饺子，自然贴合住校生的日常，也承载了归家的牵挂。"},{"role":"新婚妻子","round":16,"output_text":"下班就能钻咱俩那床喜被啦","candidates":["老公，等我一起挂婚纱照","今晚早点下班，陪你把喜被换薄些","下班就能钻咱俩那床喜被啦"],"selected":3,"reason":"下班钻进两人的喜被，日常动作里有新婚妻子盼着归家的亲昵。"},{"role":"远洋船员","round":17,"output_text":"海上晃了仨月，馋你炖的鱼了。","candidates":["海上晃了仨月，馋你炖的鱼了。","等船靠岸，回去给你煮面","海上晃了半年，回去给你做饭。"],"selected":1,"reason":"惦记你炖的鱼，日常滋味承载海上久别后想回家的牵挂。"},{"role":"幼儿园老师","round":18,"output_text":"送走最后一个娃，回去陪妈吃饭。","candidates":["送走最后一个娃，回去陪妈吃饭。","该回去哄那群小家伙午睡啦。","小朋友都接走啦，咱也回去陪妈吃饭。"],"selected":1,"reason":"送走最后一个娃再回家陪妈吃饭，日常动作里有对归处的牵挂。"},{"role":"候鸟","round":19,"output_text":"往南飞喽，还惦记湖边那窝软草。","candidates":["往南飞喽，还惦记湖边那窝软草。","风暖了，该飞北边补补旧巢了。","再歇会儿，就往旧巢飞。"],"selected":1,"reason":"惦记窝里的软草，细节自然具体，承接了想回家的牵挂。"},{"role":"宠物狗","round":20,"output_text":"该回去枕着主人的拖鞋睡了","candidates":["该回去叼你的拖鞋了","该回去叼你的拖鞋了","该回去枕着主人的拖鞋睡了"],"selected":3,"reason":"枕着主人的拖鞋睡觉，以狗的日常依恋承接想回家的牵挂。"},{"role":"地铁司机","round":21,"output_text":"跑完末班车，妈还等我吃饭","candidates":["停好末班车，妈炖那锅汤还热乎。","末班车停稳，就能进门吃热饭。","跑完末班车，妈还等我吃饭"],"selected":3,"reason":"跑完末班车贴合身份，妈妈等饭的日常承接了归家的牵挂。"},{"role":"修车师傅","round":22,"output_text":"洗掉手上机油，回去喝媳妇炖的汤","candidates":["洗掉一手机油，回去喝她炖的汤","擦净手上机油，就回去喝媳妇炖的汤","洗掉手上机油，回去喝媳妇炖的汤"],"selected":3,"reason":"洗机油、回家喝汤自然具体，接住了有人等自己回去的牵挂。"},{"role":"园丁","round":23,"output_text":"剪完这丛月季，老伴等着开饭呢","candidates":["剪完月季，就赶紧陪老伴吃饭。","剪完月季就进屋，老伴等着呢","剪完这丛月季，老伴等着开饭呢"],"selected":3,"reason":"这丛月季和等着开饭的老伴，让收工归家的牵挂具体自然。"},{"role":"山村老师","round":24,"output_text":"送学生过溪，娘给我留了粥","candidates":["送学生过溪，娘给我留了粥","送学生下岭，娘该热馍了","送学生下山，闺女催我回去喝粥。"],"selected":1,"reason":"送学生过溪贴合山村老师的日常，娘留的粥接住了有人等自己回家吃饭的牵挂。"},{"role":"驻站铁路工","round":25,"output_text":"接完末班车，媳妇还热着饭。","candidates":["锁好站房门，就回去吃热饭","接完末班车，媳妇还热着饭。","等末班车进站，回屋吃热饭"],"selected":2,"reason":"末班车后的热饭与媳妇的等待，让归家的牵挂自然落在日常里。"},{"role":"牧羊人","round":26,"output_text":"羊都进圈了，娘在门口等我。","candidates":["羊都进圈了，娘在门口等我。","羊圈门一关，灶边有人等我。","赶羊进圈，娘该喊我喝汤了"],"selected":1,"reason":"羊进圈、娘等在门口，日常动作里自然接住归家的牵挂。"},{"role":"异地工作的姐姐","round":27,"output_text":"车票买好，回去给小妹梳辫子","candidates":["攒够调休，回去陪弟弟吃顿饭","车票买好，回去给小妹梳辫子","下班就赶车，给弟弟带块糖。"],"selected":2,"reason":"买好车票、回家梳辫子的日常动作，具体承载了姐姐对小妹的牵挂。"},{"role":"流浪猫","round":28,"output_text":"该钻进奶奶留的纸箱了","candidates":["该钻阿婆门口的纸箱睡了","该钻进奶奶留的纸箱了","该沿墙根溜到阿婆脚边了"],"selected":2,"reason":"奶奶留的纸箱是猫惦记的归处，也藏着有人等它回去的牵挂。"},{"role":"售票员","round":29,"output_text":"关好售票窗，妈还等我吃饭","candidates":["数完票款，就回去吃热饭","关好售票窗，妈还等我吃饭","关好售票窗，我也赶末班车回去。"],"selected":2,"reason":"关窗的动作接住归家心情，妈妈等饭的细节自然承载牵挂。"},{"role":"爷爷","round":30,"output_text":"得早点回去，孙女留了半块桃酥","candidates":["收起象棋，回去给孙女剥橘子","得早点回去，孙女留了半块桃酥","得回去给小孙子讲故事了"],"selected":2,"reason":"孙女留的半块桃酥承载着等待，让爷爷想早点回家的牵挂自然可感。"}]};
+const FOOD = /(饺子|糖糕|桃酥|栗子|面包|热饭|饭|粥|面|汤|鱼|菜|吃)/g;
+const REPLIES = { 7: 6, 10: 9 };  // image chain: batons that answer the one before
+const pad = n => String(n).padStart(2, "0");
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const hl = s => esc(s).replace(FOOD, "<mark>$1</mark>");
+const isFood = s => new RegExp(FOOD.source).test(s);
+const img = DATA.image, txt = DATA.text;
+
+document.getElementById("theme").textContent = "共同主题：「" + DATA.theme + "」";
+
+// mosaic
+const mosaic = document.getElementById("mosaic");
+img.forEach(r => {
+  const a = document.createElement("a");
+  a.href = "#b" + pad(r.round);
+  a.className = isFood(r.output_text) ? "food" : "";
+  a.title = `第${pad(r.round)}棒 · ${r.role}`;
+  a.innerHTML = `<img src="img/${pad(r.round)}.webp" width="600" height="800" alt="${esc(a.title)}">`;
+  mosaic.appendChild(a);
+});
+
+// relay list
+const list = document.getElementById("relayList");
+const start = document.createElement("article");
+start.className = "baton";
+start.id = "b00";
+start.innerHTML = `<img src="img/00.webp" width="600" height="800" alt="起点" loading="lazy">
+  <div><div class="meta">00 / 30</div><div class="role">起点</div><p class="line">${esc(DATA.seed)}</p></div>`;
+list.appendChild(start);
+img.forEach(r => {
+  const el = document.createElement("article");
+  el.className = "baton" + (isFood(r.output_text) ? " food" : "");
+  el.id = "b" + pad(r.round);
+  const prev = REPLIES[r.round];
+  const cands = r.candidates.map((c, k) => `<li${k + 1 === r.selected ? ' class="chosen"' : ""}>${esc(c)}</li>`).join("");
+  el.innerHTML = `<img src="img/${pad(r.round)}.webp" width="600" height="800" alt="第${pad(r.round)}棒 · ${esc(r.role)}" loading="lazy">
+    <div>
+      <div class="meta">${pad(r.round)} / 30</div>
+      <div class="role">第${pad(r.round)}棒 · ${esc(r.role)}</div>
+      <p class="line">${hl(r.output_text)}</p>
+      ${prev ? `<p class="reply">“${esc(img[prev - 1].output_text)}”（第${pad(prev)}棒）</p>` : ""}
+      <details><summary>3 句候选 · 为什么选这句</summary><ol>${cands}</ol><p class="why">选择理由：${esc(r.reason)}</p></details>
+    </div>`;
+  list.appendChild(el);
+});
+
+// filter
+document.querySelectorAll(".filters button").forEach(b => b.addEventListener("click", () => {
+  const on = b.dataset.f === "food";
+  document.querySelectorAll(".filters button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  list.classList.toggle("food-on", on);
+  mosaic.classList.toggle("food-on", on);
+}));
+
+// compare table
+const tbody = document.querySelector("#cmp tbody");
+img.forEach((r, k) => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td>${pad(r.round)} · ${esc(r.role)}</td><td data-k="传画">${hl(r.output_text)}</td><td data-k="传字">${hl(txt[k].output_text)}</td>`;
+  tbody.appendChild(tr);
+});
+
+// numbers
+const all = img.concat(txt).map(r => r.output_text);
+const count = re => all.reduce((n, s) => n + (s.match(re) || []).length, 0);
+const foodImg = img.filter(r => isFood(r.output_text)).length;
+const foodTxt = txt.filter(r => isFood(r.output_text)).length;
+const waits = all.filter(s => /[等留]/.test(s)).length;
+document.getElementById("stats").innerHTML = [
+  [`${foodImg}/30`, "传画的链里，提到吃的棒数"],
+  [`${foodTxt}/30`, "只传文字的链里，提到吃的棒数"],
+  [`${waits}/60`, "句子里有“等”或“留”：有人在等，有人留了饭"],
+].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+const groups = [["饭", /饭/g], ["面", /面(?!包)/g], ["粥", /粥/g], ["汤", /汤/g], ["饺子", /饺子/g], ["吃", /吃/g],
+                ["其他", /糖糕|桃酥|栗子|面包|鱼|菜/g], ["房子", /房|屋/g]];
+const counts = groups.map(([k, re]) => [k, count(re)]);
+const max = Math.max(...counts.map(c => c[1]));
+document.getElementById("bars").innerHTML = counts.map(([k, n]) =>
+  `<div class="bar"><span>${k}</span><i style="width:${n ? Math.max(2, n / max * 100) : 0}%"></i><em>${n}</em></div>`).join("");
+</script>
+</body>
+</html>
