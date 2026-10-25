@@ -90,6 +90,17 @@
   <link rel="next" href="{{ paginator.next_page_path | prepend: seo_url }}">
 {% endif %}
 
+{% if page.url == '/' %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ site.title | jsonify }},
+      "url": {{ '/' | prepend: seo_url | jsonify }}
+    }
+  </script>
+{% endif %}
+
 {% if site.social %}
   <script type="application/ld+json">
     {
