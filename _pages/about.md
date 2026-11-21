@@ -16,18 +16,16 @@ I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027
 * Agent self-evolution and automated improvement
 * Code intelligence and software-engineering agents
 * AI-agent evaluation
-* Reinforcement learning and post-training
-* Reliable long-horizon agents
 
 ## Selected Work
 
-* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** [![GitHub stars](https://img.shields.io/github/stars/simple-agent-lab/RSIHub?style=social)](https://github.com/simple-agent-lab/RSIHub/stargazers) — I led development of this open-source framework for evolving agent prompts, skills, harnesses, and code against fixed evaluators. The [paper](https://arxiv.org/abs/2610.32253) was accepted to the **NeurIPS 2026 Meta-Agents Workshop**.
-* **[Automated Code Efficiency Optimization via Agent Skill Mining](https://arxiv.org/abs/2603.27850)** — **Accepted to Findings of EACL 2027.** I co-led EffiSkill, a framework that learns reusable optimization skills from slow and fast program pairs and applies them to unseen code.
-* **[Beneath the Surface: What We Overlook When We Talk About Agent Evolution](https://arxiv.org/abs/2611.07624)** — I co-led a study of what changes when agents improve their benchmark scores. Across 16 evolved agents, every agent solved new tasks while losing some it had previously solved.
+* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** [![GitHub stars](https://img.shields.io/github/stars/simple-agent-lab/RSIHub?style=social)](https://github.com/simple-agent-lab/RSIHub/stargazers) — An open-source framework for evolving agent prompts, skills, harnesses, and code against fixed evaluators. It records candidate changes in Git so experiments can be reproduced. The [paper](https://arxiv.org/abs/2610.32253) was accepted to the **NeurIPS 2026 Meta-Agents Workshop**.
+* **[Automated Code Efficiency Optimization via Agent Skill Mining](https://arxiv.org/abs/2603.27850)** — EffiSkill learns reusable optimization skills from slow and fast versions of the same programs. It retrieves and applies those skills to rewrite unseen code. **Accepted to Findings of EACL 2027.**
+* **[Beneath the Surface: What We Overlook When We Talk About Agent Evolution](https://arxiv.org/abs/2611.07624)** — This study examines how benchmark gains from agent evolution affect reliability, deployment cost, and transfer to other benchmarks. All 16 evolved agents solved new tasks and lost some they had previously solved.
 
 ## Selected Experience
 
-* **Undergraduate Research Assistant, UC Berkeley VIP Lab — Spring 2026 and Fall 2026–present.** On **Code as Policies (CaP)**, I build tools that let a coding agent write and revise Python programs using feedback from execution. I also built and tested a camera-guided, two-arm box pickup on a physical Unitree G1 humanoid.
+* **Researcher, UC Berkeley — spring 2026 - present.** On **Code as Policies (CaP)**, I build tools that let a coding agent write and revise Python programs using feedback from execution. I also built and tested a camera-guided, two-arm box pickup on a physical Unitree G1 humanoid.
 * **LLM Engineer Intern, ByteDance — Summer 2026:** drove RSIHub's development as lead developer and built agent skills, composable interfaces, and evaluation infrastructure for long-horizon systems.
 * **Researcher, Shanghai Jiao Tong University — Summer 2025–Spring 2026:** built EffiSkill and CodeJudge, including scalable code-optimization evaluation and SFT/reinforcement-learning pipelines for code-correctness assessment.
 
