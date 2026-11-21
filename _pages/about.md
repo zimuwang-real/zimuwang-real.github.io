@@ -25,7 +25,7 @@ I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027
 
 ## Selected Experience
 
-* **Researcher, UC Berkeley — Spring2026 - Present**. On **Code as Policies (CaP)**, I build tools that let a coding agent write and revise Python programs using feedback from execution. I also built and tested a camera-guided, two-arm box pickup on a physical Unitree G1 humanoid.
+* **Researcher, UC Berkeley — Spring 2026 - Present**. On **Code as Policies (CaP)**, I build tools that let a coding agent write and revise Python programs using feedback from execution. I also built and tested a camera-guided, two-arm box pickup on a physical Unitree G1 humanoid.
 * **LLM Engineer Intern, ByteDance — Summer 2026:** drove RSIHub's development as lead developer and built agent skills, composable interfaces, and evaluation infrastructure for long-horizon systems.
 * **Researcher, Shanghai Jiao Tong University — Summer 2025–Spring 2026:** built EffiSkill and CodeJudge, including scalable code-optimization evaluation and SFT/reinforcement-learning pipelines for code-correctness assessment.
 
