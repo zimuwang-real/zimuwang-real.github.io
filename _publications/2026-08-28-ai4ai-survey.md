@@ -10,7 +10,7 @@ external_only: true
 excerpt: "A survey of how far AI systems can reliably carry an improvement process from idea to verified result, spanning model design, agent harnesses, benchmarks, automated research, and self-modifying systems. It identifies a composition gap between strong components and reliable end-to-end improvement. [Project page](https://simpleagentlab.com/ai4ai/) · [DOI](https://doi.org/10.20944/preprints202608.2108.v1)"
 date: 2026-08-28
 venue: "Preprints.org (Review preprint)"
-display_order: 2
+display_order: 3
 authors: "Kai Wu, Hao Lyu, Zhen Luo, Chaofan Wang, Siyu Ye, Jinghao Lin, Xiaozhong Ji, Boyuan Jiang, Shengzhi Wang, Zihan Wang, Yiwen Ye, Hao Wang, <u>Zimu Wang</u>, Wenzhe Liu, Ruobing Wang, Kai Cai, Mingliang Xiong, Wen Fang, Mingqing Liu, Yifan Zhang, Lei Yang, Xiaobin Hu, Qingwen Liu"
 show_on_cv: false
 ---

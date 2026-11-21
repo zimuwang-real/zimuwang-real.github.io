@@ -7,9 +7,9 @@ redirect_from:
   - /about.html
 ---
 
-I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027. I recently completed an **LLM engineering internship at ByteDance**, where I led development of RSIHub and worked on practical agent systems for self-improvement, long-horizon tasks, and code-oriented evaluation. My research focuses on self-improving agents, code intelligence, and reliable AI systems.
+I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027. I study how coding and tool-using agents learn reusable skills from execution feedback and how to measure whether those skills make agents more reliable. At **ByteDance**, I led the development of RSIHub for reproducible agent evolution. At Berkeley, I work with [Prof. Avideh Zakhor](https://www2.eecs.berkeley.edu/Faculty/Homepages/zakhor.html) on coding agents for humanoid manipulation.
 
-<p><a href="/files/Zimu_Wang_Resume.pdf">Resume PDF</a> | <a href="https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra">Google Scholar</a> | <a href="https://github.com/zimuwang-real">GitHub</a> | <a href="https://www.linkedin.com/in/zimu-wang-32b62a289">LinkedIn</a></p>
+<p><a href="/files/Zimu_Wang_Resume.pdf">CV (PDF)</a> | <a href="https://scholar.google.com/citations?user=jAEC_qEAAAAJ&hl=en&oi=sra">Google Scholar</a> | <a href="https://github.com/zimuwang-real">GitHub</a> | <a href="https://www.linkedin.com/in/zimu-wang-32b62a289">LinkedIn</a></p>
 
 ## Research Interests
 
@@ -21,11 +21,13 @@ I am a computer science undergraduate at **UC Berkeley**, graduating in May 2027
 
 ## Selected Work
 
-* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** [![GitHub stars](https://img.shields.io/github/stars/simple-agent-lab/RSIHub?style=social)](https://github.com/simple-agent-lab/RSIHub/stargazers) — **Lead developer; drove the project from 0→1.** An open-source recursive self-improvement framework that evolves agent prompts, skills, harnesses, and code while preserving frozen evaluators, declared mutation boundaries, and auditable Git-based experiment lineage. The accompanying paper was accepted to the **NeurIPS 2026 Meta-Agents Workshop**.
-* **[EffiSkill: Agent Skill Based Automated Code Efficiency Optimization](https://arxiv.org/abs/2603.27850)** — **Under review via ACL Rolling Review.** First-author work on automated code-efficiency optimization that mines reusable Operator and Meta Skills, retrieves relevant skills for new programs, and composes optimization plans without execution feedback.
+* **[RSIHub](https://github.com/simple-agent-lab/RSIHub)** [![GitHub stars](https://img.shields.io/github/stars/simple-agent-lab/RSIHub?style=social)](https://github.com/simple-agent-lab/RSIHub/stargazers) — I led development of this open-source framework for evolving agent prompts, skills, harnesses, and code against fixed evaluators. The [paper](https://arxiv.org/abs/2610.32253) was accepted to the **NeurIPS 2026 Meta-Agents Workshop**.
+* **[Automated Code Efficiency Optimization via Agent Skill Mining](https://arxiv.org/abs/2603.27850)** — **Accepted to Findings of EACL 2027.** I co-led EffiSkill, a framework that learns reusable optimization skills from slow and fast program pairs and applies them to unseen code.
+* **[Beneath the Surface: What We Overlook When We Talk About Agent Evolution](https://arxiv.org/abs/2611.07624)** — I co-led a study of what changes when agents improve their benchmark scores. Across 16 evolved agents, every agent solved new tasks while losing some it had previously solved.
 
 ## Selected Experience
 
+* **Undergraduate Research Assistant, UC Berkeley VIP Lab — Spring 2026 and Fall 2026–present.** On **Code as Policies (CaP)**, I build tools that let a coding agent write and revise Python programs using feedback from execution. I also built and tested a camera-guided, two-arm box pickup on a physical Unitree G1 humanoid.
 * **LLM Engineer Intern, ByteDance — Summer 2026:** drove RSIHub's development as lead developer and built agent skills, composable interfaces, and evaluation infrastructure for long-horizon systems.
 * **Researcher, Shanghai Jiao Tong University — Summer 2025–Spring 2026:** built EffiSkill and CodeJudge, including scalable code-optimization evaluation and SFT/reinforcement-learning pipelines for code-correctness assessment.
 
